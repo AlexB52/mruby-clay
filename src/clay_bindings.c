@@ -8,7 +8,80 @@
 #include <mruby/array.h>
 #include <mruby/hash.h>
 
+// -- [GLOBALS] --
+
+static mrb_state* CLAY_mrb;
+static mrb_value CLAY_measure_proc;
+static mrb_value CLAY_error_proc;
+
 // -- [INITIALIZATION] --
+
+void HandleClayErrors(Clay_ErrorData errorData) {
+  mrb_value error = mrb_hash_new_capa(CLAY_mrb, 2);
+  mrb_sym error_type;
+
+  switch (errorData.errorType) {
+    case CLAY_ERROR_TYPE_TEXT_MEASUREMENT_FUNCTION_NOT_PROVIDED: {
+      error_type =
+          mrb_intern_lit(CLAY_mrb, "text_measurement_function_not_provided");
+      break;
+    }
+    case CLAY_ERROR_TYPE_ARENA_CAPACITY_EXCEEDED: {
+      error_type = mrb_intern_lit(CLAY_mrb, "arena_capacity_exceeded");
+      break;
+    }
+    case CLAY_ERROR_TYPE_ELEMENTS_CAPACITY_EXCEEDED: {
+      error_type = mrb_intern_lit(CLAY_mrb, "elements_capacity_exceeded");
+      break;
+    }
+    case CLAY_ERROR_TYPE_TEXT_MEASUREMENT_CAPACITY_EXCEEDED: {
+      error_type =
+          mrb_intern_lit(CLAY_mrb, "text_measurement_capacity_exceeded");
+    } break;
+    case CLAY_ERROR_TYPE_DUPLICATE_ID: {
+      error_type = mrb_intern_lit(CLAY_mrb, "duplicate_id");
+      break;
+    }
+    case CLAY_ERROR_TYPE_FLOATING_CONTAINER_PARENT_NOT_FOUND: {
+      error_type =
+          mrb_intern_lit(CLAY_mrb, "floating_container_parent_not_found");
+    } break;
+    case CLAY_ERROR_TYPE_PERCENTAGE_OVER_1: {
+      error_type = mrb_intern_lit(CLAY_mrb, "percentage_over_1");
+      break;
+    }
+    case CLAY_ERROR_TYPE_INTERNAL_ERROR: {
+      error_type = mrb_intern_lit(CLAY_mrb, "internal_error");
+      break;
+    }
+  }
+
+  mrb_hash_set(CLAY_mrb, error, mrb_str_new_lit(CLAY_mrb, "message"),
+               mrb_str_new(CLAY_mrb, errorData.errorText.chars,
+                           errorData.errorText.length));
+
+  mrb_hash_set(CLAY_mrb, error, mrb_str_new_lit(CLAY_mrb, "type"),
+               mrb_symbol_value(error_type));
+  mrb_yield(CLAY_mrb, CLAY_error_proc, error);
+}
+
+mrb_value mrb_clay_initialize(mrb_state* mrb, mrb_value self) {
+  // Taking some shortcuts here for now by initializing the minimum arena
+  mrb_int width, height;
+  mrb_value error_blk;
+  mrb_get_args(mrb, "ii&", &width, &height, &error_blk);
+  CLAY_mrb = mrb;
+  CLAY_error_proc = error_blk;
+
+  uint64_t totalMemorySize = Clay_MinMemorySize();
+  Clay_Arena arena = Clay_CreateArenaWithCapacityAndMemory(
+      totalMemorySize, malloc(totalMemorySize));
+
+  Clay_Initialize(arena, (Clay_Dimensions){width, height},
+                  (Clay_ErrorHandler){HandleClayErrors});
+
+  return mrb_nil_value();
+}
 
 mrb_value mrb_clay_min_memory_size(mrb_state* mrb, mrb_value self) {
   return mrb_fixnum_value(Clay_MinMemorySize());
@@ -192,9 +265,6 @@ mrb_value mrb_clay_end_layout(mrb_state* mrb, mrb_value self) {
 
 // -- [MEASURE TEXT] --
 
-static mrb_state* CLAY_mrb = NULL;
-static mrb_value CLAY_measure_proc = {0};
-
 static Clay_Dimensions measure_text_callback(Clay_StringSlice text,
                                              Clay_TextElementConfig* config,
                                              void* user_data) {
@@ -250,6 +320,8 @@ void mrb_mruby_clay_gem_init(mrb_state* mrb) {
                              mrb_clay_min_memory_size, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, module, "set_layout_dimensions",
                              mrb_clay_set_layout_dimensions, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, module, "initialize", mrb_clay_initialize,
+                             MRB_ARGS_REQ(2));
 }
 
 void mrb_mruby_clay_gem_final(mrb_state* mrb) { /* nothing to clean up */ }
