@@ -1,0 +1,3 @@
+-I./mruby/include
+-I./clay
+-I./termbox2
