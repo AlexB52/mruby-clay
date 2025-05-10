@@ -1,5 +1,7 @@
 #include <clay.h>
 #include <termbox2.h>
+#include <stdbool.h>
+#include <math.h>
 
 const Clay_Color COLOR_DEFAULT = (Clay_Color){0, 0, 0, 0};
 const Clay_Color COLOR_BLACK = (Clay_Color){0, 0, 0, 255};
@@ -21,15 +23,28 @@ const Clay_Color COLOR_WHITE = (Clay_Color){255, 255, 255, 255};
 #define TB_CYAN 0x0007
 #define TB_WHITE 0x0008
 
+
+bool IsClipped(int x, int y);
 void HandleClayErrors(Clay_ErrorData errorData);
 uint16_t TBColorFromClayColor(const Clay_Color color);
 Clay_Dimensions MeasureTextTerminal(Clay_StringSlice text, Clay_TextElementConfig* cfg, void* userData);
+void PushClip(Clay_BoundingBox bbox);
+void PopClip(void);
 void DrawRectangle(const Clay_BoundingBox bbox, Clay_Color color);
 void DrawText(Clay_BoundingBox bbox, Clay_TextRenderData text);
 void DrawBorder(Clay_BoundingBox bbox, Clay_BorderRenderData text);
 void DrawClayCommands(Clay_RenderCommandArray commands);
+int clay_set_cell(int x, int y, uint32_t ch, uintattr_t fg, uintattr_t bg);
 
 #ifdef TERMBOX_RENDERER_IMPL
+
+int clay_set_cell(int x, int y, uint32_t ch, uintattr_t fg, uintattr_t bg) {
+  if (IsClipped(x, y)) {
+    return 0;
+  }
+
+  return tb_set_cell(x, y, ch, fg, bg);
+}
 
 void HandleClayErrors(Clay_ErrorData errorData) {
   // See the Clay_ErrorData struct for more information
@@ -87,7 +102,7 @@ void DrawRectangle(const Clay_BoundingBox bbox, Clay_Color color) {
 
   for (int yy = y0; yy <= y1; yy++) {
     for (int xx = x0; xx <= x1; xx++) {
-      tb_set_cell(xx, yy, ' ', TB_BLACK, TBColorFromClayColor(color));
+      clay_set_cell(xx, yy, ' ', TB_BLACK, TBColorFromClayColor(color));
     }
   }
 }
@@ -108,7 +123,7 @@ void DrawText(Clay_BoundingBox bbox, Clay_TextRenderData text) {
   int dx = 0;
   for (int i = 0; i < len; i++) {
     uint32_t ch = (uint32_t)chars[i];  // assumes ASCII or single‑cell runes
-    tb_set_cell(x + dx, y, ch, fg, bg);
+    clay_set_cell(x + dx, y, ch, fg, bg);
     dx += 1 + text.letterSpacing;
   }
 }
@@ -158,37 +173,83 @@ void DrawBorder(Clay_BoundingBox bbox, Clay_BorderRenderData border) {
   BorderElements rightStyle = BorderElementsFromSize(rightSize);
   BorderElements bottomStyle = BorderElementsFromSize(bottomSize);
 
-  // if (leftSize+topSize > 1) {
-    tb_set_cell(x0, y0, topStyle.tl, fg, bg);
-  // }
-
-  // if (leftSize+bottomSize > 1) {
-    tb_set_cell(x1, y0, topStyle.tr, fg, bg);
-  // }
-
-  // if (rightSize+topSize > 1) {
-    tb_set_cell(x0, y1, bottomStyle.bl, fg, bg);
-  // }
-
-  // if (rightSize+bottomSize > 1) {
-    tb_set_cell(x1, y1, bottomStyle.br, fg, bg);
-  // }
+  clay_set_cell(x0, y0, topStyle.tl, fg, bg);
+  clay_set_cell(x1, y0, topStyle.tr, fg, bg);
+  clay_set_cell(x0, y1, bottomStyle.bl, fg, bg);
+  clay_set_cell(x1, y1, bottomStyle.br, fg, bg);
 
   for (int i = x0+1; i < x1; ++i) {
-    tb_set_cell(i, y0, topStyle.hb, fg, bg);
-    tb_set_cell(i, y1, bottomStyle.hb, fg, bg);
+    clay_set_cell(i, y0, topStyle.hb, fg, bg);
+    clay_set_cell(i, y1, bottomStyle.hb, fg, bg);
   }
 
   for (int j = y0+1; j < y1; ++j) {
-    tb_set_cell(x0, j, leftStyle.vb, fg, bg);
-    tb_set_cell(x1, j, rightStyle.vb, fg, bg);
+    clay_set_cell(x0, j, leftStyle.vb, fg, bg);
+    clay_set_cell(x1, j, rightStyle.vb, fg, bg);
   }
+}
+
+// --------------------------------------------------
+// clip_stack.h
+// --------------------------------------------------
+#define MAX_CLIP_DEPTH 16
+
+static Clay_BoundingBox clip_stack[MAX_CLIP_DEPTH];
+static int clip_depth = 0;
+
+void PushClip(Clay_BoundingBox bbox) {
+    Clay_BoundingBox newC = bbox;
+    if (clip_depth > 0) {
+        Clay_BoundingBox parent = clip_stack[clip_depth-1];
+        float x0 = fmaxf(parent.x,      bbox.x);
+        float y0 = fmaxf(parent.y,      bbox.y);
+        float x1 = fminf(parent.x + parent.width,  bbox.x + bbox.width);
+        float y1 = fminf(parent.y + parent.height, bbox.y + bbox.height);
+
+        if (x1 <= x0 || y1 <= y0) {
+            // Empty intersection
+            newC.x = newC.y = 0;
+            newC.width = newC.height = 0;
+        } else {
+            newC.x      = x0;
+            newC.y      = y0;
+            newC.width  = x1 - x0;
+            newC.height = y1 - y0;
+        }
+    }
+
+    if (clip_depth < MAX_CLIP_DEPTH)
+        clip_stack[clip_depth++] = newC;
+}
+
+// Pop the last clip rect
+void PopClip(void) {
+    if (clip_depth > 0) clip_depth--;
+}
+
+bool IsClipped(int x, int y) {
+    if (clip_depth == 0) return false;  // no clipping
+    Clay_BoundingBox c = clip_stack[clip_depth-1];
+    return x < (int)c.x
+        || y < (int)c.y
+        || x >= (int)(c.x + c.width)
+        || y >= (int)(c.y + c.height);
 }
 
 void DrawClayCommands(Clay_RenderCommandArray commands) {
   for (int i = 0; i < commands.length; i++) {
     Clay_RenderCommand* renderCommand = &commands.internalArray[i];
     switch (renderCommand->commandType) {
+      case CLAY_RENDER_COMMAND_TYPE_SCISSOR_START: {
+        PushClip(renderCommand->boundingBox);
+        break;
+      }
+
+      case CLAY_RENDER_COMMAND_TYPE_SCISSOR_END: {
+        PopClip();
+        break;
+      }
+
       case CLAY_RENDER_COMMAND_TYPE_RECTANGLE: {
         DrawRectangle(renderCommand->boundingBox,
                       renderCommand->renderData.rectangle.backgroundColor);
@@ -204,8 +265,6 @@ void DrawClayCommands(Clay_RenderCommandArray commands) {
                           renderCommand->renderData.border);
         break;
       case CLAY_RENDER_COMMAND_TYPE_IMAGE:
-      case CLAY_RENDER_COMMAND_TYPE_SCISSOR_START:
-      case CLAY_RENDER_COMMAND_TYPE_SCISSOR_END:
       case CLAY_RENDER_COMMAND_TYPE_NONE:
       case CLAY_RENDER_COMMAND_TYPE_CUSTOM:
         break;

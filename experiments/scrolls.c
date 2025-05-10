@@ -56,7 +56,7 @@ int main() {
              pointerPos.x, pointerPos.y, scrollX, scrollY, isMouseDown);
 
     Clay_SetPointerState(pointerPos, isMouseDown);
-    Clay_UpdateScrollContainers(true, (Clay_Vector2){scrollY, scrollY}, 0.100f);
+    Clay_UpdateScrollContainers(true, (Clay_Vector2){scrollY, scrollY}, 0.1f);
 
     Clay_BeginLayout();
 
@@ -65,8 +65,8 @@ int main() {
     CLAY(
         {.id = CLAY_ID("root"),
          .backgroundColor = COLOR_RED,
-         .layout = {.childGap = 10,
-                    .padding = 1,
+         .layout = {.childGap = 1,
+                    .padding = CLAY_PADDING_ALL(1),
                     .sizing = {
                         // make the root fill the space given by Clay_Initialize
                         CLAY_SIZING_GROW(0),  // width
@@ -74,10 +74,12 @@ int main() {
                     }}}) {
       CLAY({.id = CLAY_ID("FIRST"),
             .backgroundColor = COLOR_BLACK,
-            .scroll = {.vertical = true},
+            .clip = {.vertical = true, .childOffset = Clay_GetScrollOffset()},
+            .border = {.width = CLAY_BORDER_ALL(3),
+                       .backgroundColor = COLOR_BLACK},
             .layout = {
-                .padding = 1,
-                .sizing = {CLAY_SIZING_PERCENT(.5f), CLAY_SIZING_GROW()}}}) {
+                .padding = CLAY_PADDING_ALL(1),
+                .sizing = {CLAY_SIZING_PERCENT(.5f), CLAY_SIZING_FIXED(25)}}}) {
         CLAY_TEXT(
             CLAY_STRING(
                 "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed "
@@ -177,6 +179,7 @@ int main() {
                 "non proident, sunt in culpa qui officia deserunt mollit anim "
                 "id est laborum."),
             CLAY_TEXT_CONFIG({.textColor = COLOR_WHITE,
+                              .backgroundColor = COLOR_BLACK,
                               .textAlignment = CLAY_TEXT_ALIGN_CENTER}));
       }
       CLAY({.id = CLAY_ID("SECOND"),
@@ -193,29 +196,7 @@ int main() {
 
     // All clay layouts are declared between Clay_BeginLayout and Clay_EndLayout
     Clay_RenderCommandArray renderCommands = Clay_EndLayout();
-
-    for (int i = 0; i < renderCommands.length; i++) {
-      Clay_RenderCommand* renderCommand = &renderCommands.internalArray[i];
-      switch (renderCommand->commandType) {
-        case CLAY_RENDER_COMMAND_TYPE_RECTANGLE: {
-          DrawRectangle(renderCommand->boundingBox,
-                        renderCommand->renderData.rectangle.backgroundColor);
-          break;
-        }
-        case CLAY_RENDER_COMMAND_TYPE_TEXT: {
-          DrawTextCommand(renderCommand->boundingBox,
-                          renderCommand->renderData.text);
-          break;
-        }
-        case CLAY_RENDER_COMMAND_TYPE_NONE:
-        case CLAY_RENDER_COMMAND_TYPE_BORDER:
-        case CLAY_RENDER_COMMAND_TYPE_IMAGE:
-        case CLAY_RENDER_COMMAND_TYPE_SCISSOR_START:
-        case CLAY_RENDER_COMMAND_TYPE_SCISSOR_END:
-        case CLAY_RENDER_COMMAND_TYPE_CUSTOM:
-          break;
-      }
-    }
+    DrawClayCommands(renderCommands);
     tb_present();
   }
   tb_shutdown();
