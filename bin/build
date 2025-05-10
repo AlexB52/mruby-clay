@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+pushd ./mruby
+MRUBY_CONFIG=../build_config/development.rb rake
+popd
