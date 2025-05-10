@@ -4,3 +4,6 @@
 [submodule "mruby"]
 	path = mruby
 	url = https://github.com/mruby/mruby.git
+[submodule "termbox2"]
+	path = termbox2
+	url = https://github.com/termbox/termbox2.git
