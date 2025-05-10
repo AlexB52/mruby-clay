@@ -8,6 +8,12 @@
 #include <mruby/array.h>
 #include <mruby/hash.h>
 
+// -- [INITIALIZATION] --
+
+mrb_value mrb_clay_min_memory_size(mrb_state* mrb, mrb_value self) {
+  return mrb_fixnum_value(Clay_MinMemorySize());
+}
+
 // -- [LAYOUT] --
 
 mrb_value mrb_clay_begin_layout() {
@@ -223,6 +229,8 @@ void mrb_mruby_clay_gem_init(mrb_state* mrb) {
                              MRB_ARGS_NONE());
   mrb_define_module_function(mrb, module, "end_layout", mrb_clay_end_layout,
                              MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, module, "min_memory_size",
+                             mrb_clay_min_memory_size, MRB_ARGS_NONE());
 }
 
 void mrb_mruby_clay_gem_final(mrb_state* mrb) { /* nothing to clean up */ }
