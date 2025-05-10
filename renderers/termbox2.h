@@ -48,7 +48,7 @@ int clay_set_cell(int x, int y, uint32_t ch, uintattr_t fg, uintattr_t bg) {
 
 void HandleClayErrors(Clay_ErrorData errorData) {
   // See the Clay_ErrorData struct for more information
-  printf("%s", errorData.errorText.chars);
+  printf("%d: %s", errorData.errorType, errorData.errorText.chars);
 }
 
 uint16_t TBColorFromClayColor(const Clay_Color color) {
@@ -192,44 +192,28 @@ void DrawBorder(Clay_BoundingBox bbox, Clay_BorderRenderData border) {
 // --------------------------------------------------
 // clip_stack.h
 // --------------------------------------------------
-#define MAX_CLIP_DEPTH 16
+typedef struct {
+    Clay_BoundingBox boundBox;
+    bool             enabled;
+} CurrentClip;
 
-static Clay_BoundingBox clip_stack[MAX_CLIP_DEPTH];
-static int clip_depth = 0;
+static CurrentClip currentClip = { .enabled = false };
 
-void PushClip(Clay_BoundingBox bbox) {
-    Clay_BoundingBox newC = bbox;
-    if (clip_depth > 0) {
-        Clay_BoundingBox parent = clip_stack[clip_depth-1];
-        float x0 = fmaxf(parent.x,      bbox.x);
-        float y0 = fmaxf(parent.y,      bbox.y);
-        float x1 = fminf(parent.x + parent.width,  bbox.x + bbox.width);
-        float y1 = fminf(parent.y + parent.height, bbox.y + bbox.height);
-
-        if (x1 <= x0 || y1 <= y0) {
-            // Empty intersection
-            newC.x = newC.y = 0;
-            newC.width = newC.height = 0;
-        } else {
-            newC.x      = x0;
-            newC.y      = y0;
-            newC.width  = x1 - x0;
-            newC.height = y1 - y0;
-        }
-    }
-
-    if (clip_depth < MAX_CLIP_DEPTH)
-        clip_stack[clip_depth++] = newC;
+// enable clipping
+void EnableClip(Clay_BoundingBox bbox) {
+    currentClip.boundBox = bbox;
+    currentClip.enabled  = true;
 }
 
-// Pop the last clip rect
-void PopClip(void) {
-    if (clip_depth > 0) clip_depth--;
+// disable clipping
+void DisableClip(void) {
+    currentClip.enabled = false;
 }
 
+// test if a cell is outside the clip rect
 bool IsClipped(int x, int y) {
-    if (clip_depth == 0) return false;  // no clipping
-    Clay_BoundingBox c = clip_stack[clip_depth-1];
+    if (!currentClip.enabled) return false;
+    Clay_BoundingBox c = currentClip.boundBox;
     return x < (int)c.x
         || y < (int)c.y
         || x >= (int)(c.x + c.width)
@@ -241,12 +225,12 @@ void DrawClayCommands(Clay_RenderCommandArray commands) {
     Clay_RenderCommand* renderCommand = &commands.internalArray[i];
     switch (renderCommand->commandType) {
       case CLAY_RENDER_COMMAND_TYPE_SCISSOR_START: {
-        PushClip(renderCommand->boundingBox);
+        EnableClip(renderCommand->boundingBox);
         break;
       }
 
       case CLAY_RENDER_COMMAND_TYPE_SCISSOR_END: {
-        PopClip();
+        DisableClip();
         break;
       }
 

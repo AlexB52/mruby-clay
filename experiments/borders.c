@@ -44,29 +44,51 @@ int main() {
                      .layoutDirection = CLAY_TOP_TO_BOTTOM,
                      .padding = CLAY_PADDING_ALL(1),
                      .sizing = {CLAY_SIZING_GROW(), CLAY_SIZING_GROW()}}}) {
-      for (int i = 0; i < 4; ++i) {
-        CLAY({.layout = {.sizing = {CLAY_SIZING_PERCENT(1.0f)}}}) {
-          for (int i = 0; i < 4; ++i) {
-            CLAY({.backgroundColor = colors[i % 9],
-                  .border = {.width = CLAY_BORDER_ALL(3),
-                             .color = COLOR_WHITE,
-                             .backgroundColor = colors[i % 9]},
-                  .layout = {.padding = CLAY_PADDING_ALL(1),
-                             .sizing = {CLAY_SIZING_GROW()}}}) {
-              CLAY_TEXT(
-                  CLAY_STRING(
-                      "Lorem ipsum dolor sit amet, consectetur adipisicing "
-                      "elit, sed do eiusmod tempor incididunt ut labore et "
-                      "dolore magna aliqua. Ut enim ad minim veniam, quis "
-                      "nostrud exercitation ullamco laboris nisi ut "
-                      "aliquip ex ea commodo consequat. Duis aute irure "
-                      "dolor in reprehenderit in voluptate velit esse "
-                      "cillum dolore eu fugiat nulla pariatur. Excepteur "
-                      "sint occaecat cupidatat non proident, sunt in culpa "
-                      "qui officia deserunt mollit anim id est laborum."),
-                  CLAY_TEXT_CONFIG({.textColor = colors[(i + 1) % 9],
-                                    .backgroundColor = colors[i % 9]}));
-            }
+      CLAY({.layout = {.sizing = {CLAY_SIZING_PERCENT(1.0f)}}}) {
+        for (int i = 0; i < 4; ++i) {
+          CLAY({.backgroundColor = colors[i % 9],
+                .clip = {.vertical = true},
+                .border = {.width = CLAY_BORDER_ALL(3),
+                           .color = COLOR_WHITE,
+                           .backgroundColor = colors[i % 9]},
+                .layout = {.padding = CLAY_PADDING_ALL(1),
+                           .sizing = {CLAY_SIZING_GROW()}}}) {
+            CLAY_TEXT(CLAY_STRING(
+                          "Lorem ipsum dolor sit amet, consectetur adipisicing "
+                          "elit, sed do eiusmod tempor incididunt ut labore et "
+                          "dolore magna aliqua. Ut enim ad minim veniam, quis "
+                          "nostrud exercitation ullamco laboris nisi ut "
+                          "aliquip ex ea commodo consequat. Duis aute irure "
+                          "dolor in reprehenderit in voluptate velit esse "
+                          "cillum dolore eu fugiat nulla pariatur. Excepteur "
+                          "sint occaecat cupidatat non proident, sunt in culpa "
+                          "qui officia deserunt mollit anim id est laborum."),
+                      CLAY_TEXT_CONFIG({.textColor = colors[(i + 1) % 9],
+                                        .backgroundColor = colors[i % 9]}));
+          }
+        }
+      }
+      CLAY({.layout = {.sizing = {CLAY_SIZING_PERCENT(1.0f)}}}) {
+        for (int i = 0; i < 4; ++i) {
+          CLAY({.backgroundColor = colors[i % 9],
+                .clip = {.vertical = true},
+                .border = {.width = CLAY_BORDER_ALL(3),
+                           .color = COLOR_WHITE,
+                           .backgroundColor = colors[i % 9]},
+                .layout = {.padding = CLAY_PADDING_ALL(1),
+                           .sizing = {CLAY_SIZING_GROW()}}}) {
+            CLAY_TEXT(CLAY_STRING(
+                          "Lorem ipsum dolor sit amet, consectetur adipisicing "
+                          "elit, sed do eiusmod tempor incididunt ut labore et "
+                          "dolore magna aliqua. Ut enim ad minim veniam, quis "
+                          "nostrud exercitation ullamco laboris nisi ut "
+                          "aliquip ex ea commodo consequat. Duis aute irure "
+                          "dolor in reprehenderit in voluptate velit esse "
+                          "cillum dolore eu fugiat nulla pariatur. Excepteur "
+                          "sint occaecat cupidatat non proident, sunt in culpa "
+                          "qui officia deserunt mollit anim id est laborum."),
+                      CLAY_TEXT_CONFIG({.textColor = colors[(i + 1) % 9],
+                                        .backgroundColor = colors[i % 9]}));
           }
         }
       }
