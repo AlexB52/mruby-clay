@@ -1,0 +1,6 @@
+[submodule "clay"]
+	path = clay
+	url = https://github.com/nicbarker/clay.git
+[submodule "mruby"]
+	path = mruby
+	url = https://github.com/mruby/mruby.git
