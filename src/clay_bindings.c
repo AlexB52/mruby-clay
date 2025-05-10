@@ -14,6 +14,23 @@ mrb_value mrb_clay_min_memory_size(mrb_state* mrb, mrb_value self) {
   return mrb_fixnum_value(Clay_MinMemorySize());
 }
 
+mrb_value mrb_clay_dimensions(mrb_state* mrb, Clay_Dimensions dimensions) {
+  mrb_value result = mrb_hash_new_capa(mrb, 2);
+  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "width"),
+               mrb_fixnum_value(dimensions.width));
+  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "height"),
+               mrb_fixnum_value(dimensions.height));
+  return result;
+}
+
+mrb_value mrb_clay_set_layout_dimensions(mrb_state* mrb, mrb_value self) {
+  mrb_int width, height;
+  mrb_get_args(mrb, "ii", &width, &height);
+  Clay_Dimensions dimensions = {.width = width, .height = height};
+  Clay_SetLayoutDimensions(dimensions);
+  return mrb_clay_dimensions(mrb, dimensions);
+}
+
 // -- [LAYOUT] --
 
 mrb_value mrb_clay_begin_layout() {
@@ -231,6 +248,8 @@ void mrb_mruby_clay_gem_init(mrb_state* mrb) {
                              MRB_ARGS_NONE());
   mrb_define_module_function(mrb, module, "min_memory_size",
                              mrb_clay_min_memory_size, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, module, "set_layout_dimensions",
+                             mrb_clay_set_layout_dimensions, MRB_ARGS_NONE());
 }
 
 void mrb_mruby_clay_gem_final(mrb_state* mrb) { /* nothing to clean up */ }
