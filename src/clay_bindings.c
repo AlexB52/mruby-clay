@@ -1,5 +1,6 @@
 #define CLAY_IMPLEMENTATION
 #include <clay.h>
+#include "structs.c"
 
 #define TB_IMPL
 #include <termbox2.h>
@@ -322,6 +323,8 @@ void mrb_mruby_clay_gem_init(mrb_state* mrb) {
                              mrb_clay_set_layout_dimensions, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, module, "initialize", mrb_clay_initialize,
                              MRB_ARGS_REQ(2));
+  mrb_define_module_function(mrb, module, "ui", mrb_clay_clay_ui,
+                             MRB_ARGS_REQ(1));
 }
 
 void mrb_mruby_clay_gem_final(mrb_state* mrb) { /* nothing to clean up */ }
