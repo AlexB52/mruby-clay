@@ -5,6 +5,7 @@
 #define TB_IMPL
 #include <termbox2.h>
 
+#include <locale.h>
 #include <mruby.h>
 #include <mruby/array.h>
 #include <mruby/hash.h>
@@ -67,6 +68,8 @@ void HandleClayErrors(Clay_ErrorData errorData) {
 }
 
 mrb_value mrb_clay_initialize(mrb_state* mrb, mrb_value self) {
+  setlocale(LC_ALL, "");
+
   // Taking some shortcuts here for now by initializing the minimum arena
   mrb_int width, height;
   mrb_value error_blk;
