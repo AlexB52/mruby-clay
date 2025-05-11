@@ -2,6 +2,7 @@ MRuby::Build.new do |conf|
   toolchain :gcc
 
   conf.gem "#{ MRUBY_ROOT }/.."
+  conf.gem "#{ MRUBY_ROOT }/../../mruby-termbox2"
   conf.gembox 'default'
   # conf.gembox 'full-core'
 

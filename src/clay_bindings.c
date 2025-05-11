@@ -2,7 +2,7 @@
 #include <clay.h>
 #include "structs.c"
 
-#define TB_IMPL
+// #define TB_IMPL
 #include <termbox2.h>
 
 #include <locale.h>
@@ -15,6 +15,8 @@
 static mrb_state* CLAY_mrb;
 static mrb_value CLAY_measure_proc;
 static mrb_value CLAY_error_proc;
+
+// -- [HELPERS] --
 
 // -- [INITIALIZATION] --
 
@@ -135,9 +137,9 @@ mrb_value mrb_clay_bounding_box(mrb_state* mrb, Clay_BoundingBox bbox) {
   mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "y"),
                mrb_float_value(mrb, bbox.y));
   mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "width"),
-               mrb_float_value(mrb, bbox.y));
+               mrb_float_value(mrb, bbox.width));
   mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "height"),
-               mrb_float_value(mrb, bbox.y));
+               mrb_float_value(mrb, bbox.height));
   return result;
 }
 
@@ -171,8 +173,12 @@ mrb_value mrb_clay_border_width(mrb_state* mrb, Clay_BorderWidth borderWidth) {
 }
 
 mrb_value mrb_clay_rectangle_render_data(mrb_state* mrb,
-                                         Clay_RectangleRenderData rectData) {
-  mrb_value result = mrb_hash_new_capa(mrb, 2);
+                                         Clay_RectangleRenderData rectData,
+                                         Clay_BoundingBox bbox) {
+  mrb_value result = mrb_hash_new_capa(mrb, 3);
+
+  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "bounding_box"),
+               mrb_clay_bounding_box(mrb, bbox));
   mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "background_color"),
                mrb_clay_color(mrb, rectData.backgroundColor));
   mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "corner_radius"),
@@ -234,18 +240,22 @@ mrb_value mrb_clay_end_layout(mrb_state* mrb, mrb_value self) {
     Clay_RenderCommand* renderCommand = &clay_commands.internalArray[i];
     switch (renderCommand->commandType) {
       case CLAY_RENDER_COMMAND_TYPE_RECTANGLE: {
+        printf("In type rectangle");
         mrb_ary_set(mrb, commands, i,
                     mrb_clay_rectangle_render_data(
-                        mrb, renderCommand->renderData.rectangle));
+                        mrb, renderCommand->renderData.rectangle,
+                        renderCommand->boundingBox));
         break;
       }
       case CLAY_RENDER_COMMAND_TYPE_BORDER: {
+        printf("In type border");
         mrb_ary_set(
             mrb, commands, i,
             mrb_clay_border_render_data(mrb, renderCommand->renderData.border));
         break;
       }
       case CLAY_RENDER_COMMAND_TYPE_TEXT: {
+        printf("In type text");
         mrb_ary_set(
             mrb, commands, i,
             mrb_clay_text_render_data(mrb, renderCommand->renderData.text));
@@ -253,6 +263,7 @@ mrb_value mrb_clay_end_layout(mrb_state* mrb, mrb_value self) {
       }
       case CLAY_RENDER_COMMAND_TYPE_SCISSOR_START:
       case CLAY_RENDER_COMMAND_TYPE_SCISSOR_END: {
+        printf("In type scissor");
         mrb_ary_set(mrb, commands, i,
                     mrb_clay_bounding_box(mrb, renderCommand->boundingBox));
         break;
@@ -313,7 +324,7 @@ static mrb_value mrb_clay_set_measure_text(mrb_state* mrb, mrb_value self) {
 }
 
 void mrb_mruby_clay_gem_init(mrb_state* mrb) {
-  struct RClass* module = mrb_define_module(mrb, "clay");
+  struct RClass* module = mrb_define_module(mrb, "Clay");
   mrb_define_module_function(mrb, module, "measure_text",
                              mrb_clay_set_measure_text, MRB_ARGS_BLOCK());
   mrb_define_module_function(mrb, module, "begin_layout", mrb_clay_begin_layout,
@@ -323,8 +334,8 @@ void mrb_mruby_clay_gem_init(mrb_state* mrb) {
   mrb_define_module_function(mrb, module, "min_memory_size",
                              mrb_clay_min_memory_size, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, module, "set_layout_dimensions",
-                             mrb_clay_set_layout_dimensions, MRB_ARGS_NONE());
-  mrb_define_module_function(mrb, module, "initialize", mrb_clay_initialize,
+                             mrb_clay_set_layout_dimensions, MRB_ARGS_REQ(2));
+  mrb_define_module_function(mrb, module, "init", mrb_clay_initialize,
                              MRB_ARGS_REQ(2));
   mrb_define_module_function(mrb, module, "ui", mrb_clay_clay_ui,
                              MRB_ARGS_REQ(1));

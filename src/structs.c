@@ -7,15 +7,21 @@
 // --- [CONFIG] ---
 
 mrb_value mrb_get_hash_value(mrb_state* mrb, mrb_value hash, const char* key) {
-  return mrb_hash_get(mrb, hash, mrb_symbol_value(mrb_intern_cstr(mrb, key)));
+  mrb_value result =
+      mrb_hash_get(mrb, hash, mrb_symbol_value(mrb_intern_cstr(mrb, key)));
+  // mrb_p(mrb, mrb_str_new_lit(mrb, "------------"));
+  // mrb_p(mrb, mrb_str_new_cstr(mrb, key));
+  // mrb_p(mrb, result);
+  // mrb_p(mrb, mrb_str_new_lit(mrb, "------------"));
+  return result;
 }
 
 Clay_Color mrb_cast_clay_color(mrb_state* mrb, mrb_value hash) {
   return (Clay_Color){
-      .r = mrb_float(mrb_get_hash_value(mrb, hash, "r")),
-      .g = mrb_float(mrb_get_hash_value(mrb, hash, "g")),
-      .b = mrb_float(mrb_get_hash_value(mrb, hash, "b")),
-      .a = mrb_float(mrb_get_hash_value(mrb, hash, "a")),
+      .r = mrb_fixnum(mrb_get_hash_value(mrb, hash, "r")),
+      .g = mrb_fixnum(mrb_get_hash_value(mrb, hash, "g")),
+      .b = mrb_fixnum(mrb_get_hash_value(mrb, hash, "b")),
+      .a = mrb_fixnum(mrb_get_hash_value(mrb, hash, "a")),
   };
 }
 
@@ -26,8 +32,8 @@ Clay_ElementId mrb_cast_clay_id(mrb_state* mrb, mrb_value id) {
 }
 
 Clay_Vector2 mrb_cast_clay_vector2(mrb_state* mrb, mrb_value hash) {
-  return (Clay_Vector2){.x = mrb_float(mrb_get_hash_value(mrb, hash, "x")),
-                        .y = mrb_float(mrb_get_hash_value(mrb, hash, "y"))};
+  return (Clay_Vector2){.x = mrb_fixnum(mrb_get_hash_value(mrb, hash, "x")),
+                        .y = mrb_fixnum(mrb_get_hash_value(mrb, hash, "y"))};
 }
 
 Clay_ClipElementConfig mrb_cast_clay_clip_element_config(mrb_state* mrb,
@@ -41,12 +47,12 @@ Clay_ClipElementConfig mrb_cast_clay_clip_element_config(mrb_state* mrb,
 
 Clay_BorderWidth mrb_cast_clay_border_width(mrb_state* mrb, mrb_value hash) {
   return (Clay_BorderWidth){
-      .left = mrb_float(mrb_get_hash_value(mrb, hash, "left")),
-      .right = mrb_float(mrb_get_hash_value(mrb, hash, "right")),
-      .top = mrb_float(mrb_get_hash_value(mrb, hash, "top")),
-      .bottom = mrb_float(mrb_get_hash_value(mrb, hash, "bottom")),
+      .left = mrb_fixnum(mrb_get_hash_value(mrb, hash, "left")),
+      .right = mrb_fixnum(mrb_get_hash_value(mrb, hash, "right")),
+      .top = mrb_fixnum(mrb_get_hash_value(mrb, hash, "top")),
+      .bottom = mrb_fixnum(mrb_get_hash_value(mrb, hash, "bottom")),
       .betweenChildren =
-          mrb_float(mrb_get_hash_value(mrb, hash, "between_children"))};
+          mrb_fixnum(mrb_get_hash_value(mrb, hash, "between_children"))};
 }
 
 Clay_BorderElementConfig mrb_cast_clay_border_config(mrb_state* mrb,
@@ -72,15 +78,17 @@ Clay_SizingAxis mrb_cast_clay_sizing_axis(mrb_state* mrb, mrb_value hash) {
   mrb_value percent = mrb_get_hash_value(mrb, hash, "percent");
   Clay__SizingType type = mrb_fixnum(mrb_get_hash_value(mrb, hash, "type"));
 
-  if (mrb_float_p(percent)) {
-    return (Clay_SizingAxis){.size = {.percent = mrb_float(percent)},
+  if (mrb_fixnum_p(percent)) {
+    return (Clay_SizingAxis){.size = {.percent = mrb_fixnum(percent)},
                              .type = type};
   } else {
     return (Clay_SizingAxis){
         .size = {.minMax =
                      (Clay_SizingMinMax){
-                         .min = mrb_float(mrb_get_hash_value(mrb, hash, "min")),
-                         .max = mrb_float(mrb_get_hash_value(mrb, hash, "max")),
+                         .min =
+                             mrb_fixnum(mrb_get_hash_value(mrb, hash, "min")),
+                         .max =
+                             mrb_fixnum(mrb_get_hash_value(mrb, hash, "max")),
                      }},
         .type = type};
   }
@@ -109,16 +117,34 @@ Clay_ChildAlignment mrb_cast_clay_child_alignment(mrb_state* mrb,
 }
 
 Clay_LayoutConfig mrb_cast_clay_layout_config(mrb_state* mrb, mrb_value hash) {
-  return (Clay_LayoutConfig){
-      .childGap = mrb_fixnum(mrb_get_hash_value(mrb, hash, "childGap")),
-      .padding =
-          mrb_cast_clay_padding(mrb, mrb_get_hash_value(mrb, hash, "padding")),
-      .sizing =
-          mrb_cast_clay_sizing(mrb, mrb_get_hash_value(mrb, hash, "sizing")),
-      .childAlignment = mrb_cast_clay_child_alignment(
-          mrb, mrb_get_hash_value(mrb, hash, "child_alignment")),
-      .layoutDirection = (Clay_LayoutDirection)mrb_fixnum(
-          mrb_get_hash_value(mrb, hash, "layout_direction"))};
+  Clay_LayoutConfig result = {};
+
+  mrb_value child_gap = mrb_get_hash_value(mrb, hash, "childGap");
+  if (mrb_fixnum_p(child_gap)) {
+    result.childGap = mrb_fixnum(child_gap);
+  }
+
+  mrb_value padding = mrb_get_hash_value(mrb, hash, "padding");
+  if (mrb_hash_p(padding)) {
+    result.padding = mrb_cast_clay_padding(mrb, padding);
+  }
+
+  mrb_value sizing = mrb_get_hash_value(mrb, hash, "sizing");
+  if (mrb_hash_p(sizing)) {
+    result.sizing = mrb_cast_clay_sizing(mrb, sizing);
+  }
+
+  mrb_value alignment = mrb_get_hash_value(mrb, hash, "child_alignment");
+  if (mrb_hash_p(alignment)) {
+    result.childAlignment = mrb_cast_clay_child_alignment(mrb, alignment);
+  }
+  mrb_value layout_direction =
+      mrb_get_hash_value(mrb, hash, "layout_direction");
+  if (mrb_fixnum_p(layout_direction)) {
+    result.layoutDirection = (Clay_LayoutDirection)mrb_fixnum(layout_direction);
+  }
+
+  return result;
 }
 
 mrb_value mrb_clay_clay_ui(mrb_state* mrb, mrb_value self) {
@@ -151,6 +177,26 @@ mrb_value mrb_clay_clay_ui(mrb_state* mrb, mrb_value self) {
   if (mrb_hash_p(clip)) {
     config.clip = mrb_cast_clay_clip_element_config(mrb, clip);
   }
+
+  printf("min: %f\n", config.layout.sizing.width.size.minMax.min);
+  printf("max: %f\n", config.layout.sizing.width.size.minMax.max);
+  printf("type: %d\n", config.layout.sizing.width.type);
+
+  printf("min: %f\n", config.layout.sizing.height.size.minMax.min);
+  printf("max: %f\n", config.layout.sizing.height.size.minMax.max);
+  printf("type: %d\n", config.layout.sizing.height.type);
+
+  printf("padding left: %d\n", config.layout.padding.left);
+  printf("padding top: %d\n", config.layout.padding.top);
+  printf("padding right: %d\n", config.layout.padding.right);
+  printf("padding bottom: %d\n", config.layout.padding.bottom);
+
+  printf("ID: %s\n", config.id.stringId.chars);
+
+  printf("color R: %f\n", config.backgroundColor.r);
+  printf("color G: %f\n", config.backgroundColor.g);
+  printf("color B: %f\n", config.backgroundColor.b);
+  printf("color A: %f\n", config.backgroundColor.a);
 
   CLAY(config){};
   return mrb_nil_value();
