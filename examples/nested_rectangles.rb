@@ -1,9 +1,9 @@
-Clay.init(60, 40) do |error|
+Clay.init(100, 100) do |error|
   raise error[:message]
 end
 
 Clay.measure_text do |text, config|
-  [text.length, 1]
+  [text.length, 1.0]
 end
 
 Clay.set_layout_dimensions(60, 40)
@@ -38,7 +38,10 @@ Clay.ui(
         height: { type: 1 },
       }
     }
-  )
+  ) do 
+    Clay.text("Hello, World!", color: { r:255, g: 255, b:0, a: 255 })
+    Clay.text("Hello, World22222!", color: { r:255, g: 255, b:0, a: 255 })
+  end
 
   Clay.ui(
     id: "second",
@@ -49,7 +52,7 @@ Clay.ui(
         height: { type: 1 },
       }
     }
-  )
+  ) { Clay.text("Hello!", color: {r: 255, g:255, b:255, a:255}) }
 
 end
 

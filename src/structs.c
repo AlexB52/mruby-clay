@@ -132,6 +132,22 @@ Clay_LayoutConfig mrb_cast_clay_layout_config(mrb_state* mrb, mrb_value hash) {
   return result;
 }
 
+Clay_TextElementConfig mrb_cast_clay_text_config(mrb_state* mrb, mrb_value hash) {
+  Clay_TextElementConfig result;
+
+  result.textAlignment = (Clay_TextAlignment)mrb_fixnum(mrb_get_hash_value(mrb, hash, "text_alignment"));
+  mrb_value color = mrb_get_hash_value(mrb, hash, "color");
+  if (mrb_hash_p(color)) {
+    result.textColor = mrb_cast_clay_color(mrb, color);
+  }
+
+  mrb_value backgroundColor = mrb_get_hash_value(mrb, hash, "background_color");
+  if (mrb_hash_p(backgroundColor)) {
+    result.backgroundColor = mrb_cast_clay_color(mrb, backgroundColor);
+  }
+  return result;
+}
+
 typedef struct {
   mrb_state* mrb;
   mrb_value blk;
@@ -219,6 +235,45 @@ mrb_value mrb_clay_clay_ui(mrb_state* mrb, mrb_value self) {
   CLAY(config) {
     CLAY_YIELD_BODY(context);
   };
+
+  return mrb_nil_value();
+}
+
+// typedef struct {
+//     void *userData;
+//     Clay_Color textColor;
+//     Clay_Color backgroundColor;
+//     uint16_t fontId;
+//     uint16_t fontSize;
+//     uint16_t letterSpacing;
+//     uint16_t lineHeight;
+//     // CLAY_TEXT_WRAP_WORDS (default) breaks on whitespace characters.
+//     // CLAY_TEXT_WRAP_NEWLINES doesn't break on space characters, only on newlines.
+//     // CLAY_TEXT_WRAP_NONE disables wrapping entirely.
+//     Clay_TextElementConfigWrapMode wrapMode;
+//     // Controls how wrapped lines of text are horizontally aligned within the outer text bounding box.
+//     // CLAY_TEXT_ALIGN_LEFT (default) - Horizontally aligns wrapped lines of text to the left hand side of their
+//     bounding box.
+//     // CLAY_TEXT_ALIGN_CENTER - Horizontally aligns wrapped lines of text to the center of their bounding box.
+//     // CLAY_TEXT_ALIGN_RIGHT - Horizontally aligns wrapped lines of text to the right hand side of their bounding
+//     box. Clay_TextAlignment textAlignment;
+// } Clay_TextElementConfig;
+
+mrb_value mrb_clay_clay_text(mrb_state* mrb, mrb_value self) {
+  const char* cstr;
+  mrb_int len;
+  mrb_value options;
+
+  mrb_get_args(mrb, "s|H", &cstr, &len, &options);
+  if (mrb_nil_p(options)) {
+    options = mrb_hash_new(mrb);
+  }
+
+  printf("text: %s\n", cstr);
+  Clay_TextElementConfig config = mrb_cast_clay_text_config(mrb, options);
+
+  Clay_String clay_text = {.chars = cstr, .length = len, .isStaticallyAllocated = false};
+  CLAY_TEXT(clay_text, CLAY_TEXT_CONFIG(config));
 
   return mrb_nil_value();
 }

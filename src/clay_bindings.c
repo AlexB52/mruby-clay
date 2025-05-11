@@ -155,18 +155,14 @@ mrb_value mrb_clay_rectangle_render_data(mrb_state* mrb, Clay_RectangleRenderDat
   return result;
 }
 
-mrb_value mrb_clay_text_render_data(mrb_state* mrb, Clay_TextRenderData textData) {
-  mrb_value result = mrb_hash_new_capa(mrb, 8);
+mrb_value mrb_clay_text_render_data(mrb_state* mrb, Clay_TextRenderData textData, Clay_BoundingBox bbox) {
+  mrb_value result = mrb_hash_new_capa(mrb, 5);
   mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "type"), mrb_symbol_value(mrb_intern_lit(mrb, "text")));
+  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "bounding_box"), mrb_clay_bounding_box(mrb, bbox));
   mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "text"),
                mrb_str_new(mrb, textData.stringContents.chars, textData.stringContents.length));
   mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "color"), mrb_clay_color(mrb, textData.textColor));
   mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "background_color"), mrb_clay_color(mrb, textData.backgroundColor));
-  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "font_id"), mrb_int_value(mrb, textData.fontId));
-  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "font_size"), mrb_int_value(mrb, textData.fontSize));
-  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "letter_spacing"), mrb_int_value(mrb, textData.letterSpacing));
-  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "line_height"), mrb_int_value(mrb, textData.lineHeight));
-
   return result;
 }
 
@@ -218,7 +214,8 @@ mrb_value mrb_clay_end_layout(mrb_state* mrb, mrb_value self) {
       }
       case CLAY_RENDER_COMMAND_TYPE_TEXT: {
         printf("In type text\n");
-        mrb_ary_set(mrb, commands, i, mrb_clay_text_render_data(mrb, renderCommand->renderData.text));
+        mrb_ary_set(mrb, commands, i,
+                    mrb_clay_text_render_data(mrb, renderCommand->renderData.text, renderCommand->boundingBox));
         break;
       }
       case CLAY_RENDER_COMMAND_TYPE_SCISSOR_START: {
@@ -261,7 +258,8 @@ static Clay_Dimensions measure_text_callback(Clay_StringSlice text, Clay_TextEle
   mrb_value width = mrb_ary_ref(CLAY_mrb, ret, 0);
   mrb_value height = mrb_ary_ref(CLAY_mrb, ret, 1);
 
-  return (Clay_Dimensions){mrb_float(width), mrb_float(height)};
+  // return (Clay_Dimensions){.width = (float)text.length, .height = 1.0f};
+  return (Clay_Dimensions){.width = mrb_fixnum(width), .height = mrb_fixnum(height)};
 }
 
 static mrb_value mrb_clay_set_measure_text(mrb_state* mrb, mrb_value self) {
@@ -289,6 +287,7 @@ void mrb_mruby_clay_gem_init(mrb_state* mrb) {
   mrb_define_module_function(mrb, module, "set_layout_dimensions", mrb_clay_set_layout_dimensions, MRB_ARGS_REQ(2));
   mrb_define_module_function(mrb, module, "init", mrb_clay_initialize, MRB_ARGS_REQ(2));
   mrb_define_module_function(mrb, module, "ui", mrb_clay_clay_ui, MRB_ARGS_REQ(1));
+  mrb_define_module_function(mrb, module, "text", mrb_clay_clay_text, MRB_ARGS_REQ(2));
 }
 
 void mrb_mruby_clay_gem_final(mrb_state* mrb) { /* nothing to clean up */ }
