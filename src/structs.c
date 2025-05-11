@@ -7,8 +7,7 @@
 // --- [CONFIG] ---
 
 mrb_value mrb_get_hash_value(mrb_state* mrb, mrb_value hash, const char* key) {
-  mrb_value result =
-      mrb_hash_get(mrb, hash, mrb_symbol_value(mrb_intern_cstr(mrb, key)));
+  mrb_value result = mrb_hash_get(mrb, hash, mrb_symbol_value(mrb_intern_cstr(mrb, key)));
   // mrb_p(mrb, mrb_str_new_lit(mrb, "------------"));
   // mrb_p(mrb, mrb_str_new_cstr(mrb, key));
   // mrb_p(mrb, result);
@@ -36,33 +35,26 @@ Clay_Vector2 mrb_cast_clay_vector2(mrb_state* mrb, mrb_value hash) {
                         .y = mrb_fixnum(mrb_get_hash_value(mrb, hash, "y"))};
 }
 
-Clay_ClipElementConfig mrb_cast_clay_clip_element_config(mrb_state* mrb,
-                                                         mrb_value hash) {
+Clay_ClipElementConfig mrb_cast_clay_clip_element_config(mrb_state* mrb, mrb_value hash) {
   mrb_value child_offset = mrb_get_hash_value(mrb, hash, "childOffset");
-  return (Clay_ClipElementConfig){
-      .vertical = mrb_bool(mrb_get_hash_value(mrb, hash, "vertical")),
-      .horizontal = mrb_bool(mrb_get_hash_value(mrb, hash, "horizontal")),
-      .childOffset = mrb_cast_clay_vector2(mrb, child_offset)};
+  return (Clay_ClipElementConfig){.vertical = mrb_bool(mrb_get_hash_value(mrb, hash, "vertical")),
+                                  .horizontal = mrb_bool(mrb_get_hash_value(mrb, hash, "horizontal")),
+                                  .childOffset = mrb_cast_clay_vector2(mrb, child_offset)};
 }
 
 Clay_BorderWidth mrb_cast_clay_border_width(mrb_state* mrb, mrb_value hash) {
-  return (Clay_BorderWidth){
-      .left = mrb_fixnum(mrb_get_hash_value(mrb, hash, "left")),
-      .right = mrb_fixnum(mrb_get_hash_value(mrb, hash, "right")),
-      .top = mrb_fixnum(mrb_get_hash_value(mrb, hash, "top")),
-      .bottom = mrb_fixnum(mrb_get_hash_value(mrb, hash, "bottom")),
-      .betweenChildren =
-          mrb_fixnum(mrb_get_hash_value(mrb, hash, "between_children"))};
+  return (Clay_BorderWidth){.left = mrb_fixnum(mrb_get_hash_value(mrb, hash, "left")),
+                            .right = mrb_fixnum(mrb_get_hash_value(mrb, hash, "right")),
+                            .top = mrb_fixnum(mrb_get_hash_value(mrb, hash, "top")),
+                            .bottom = mrb_fixnum(mrb_get_hash_value(mrb, hash, "bottom")),
+                            .betweenChildren = mrb_fixnum(mrb_get_hash_value(mrb, hash, "between_children"))};
 }
 
-Clay_BorderElementConfig mrb_cast_clay_border_config(mrb_state* mrb,
-                                                     mrb_value hash) {
+Clay_BorderElementConfig mrb_cast_clay_border_config(mrb_state* mrb, mrb_value hash) {
   return (Clay_BorderElementConfig){
       .color = mrb_cast_clay_color(mrb, mrb_get_hash_value(mrb, hash, "color")),
-      .backgroundColor = mrb_cast_clay_color(
-          mrb, mrb_get_hash_value(mrb, hash, "background_color")),
-      .width = mrb_cast_clay_border_width(
-          mrb, mrb_get_hash_value(mrb, hash, "width")),
+      .backgroundColor = mrb_cast_clay_color(mrb, mrb_get_hash_value(mrb, hash, "background_color")),
+      .width = mrb_cast_clay_border_width(mrb, mrb_get_hash_value(mrb, hash, "width")),
   };
 }
 
@@ -80,18 +72,14 @@ Clay_SizingAxis mrb_cast_clay_sizing_axis(mrb_state* mrb, mrb_value hash) {
   Clay__SizingType type = mrb_fixnum(mrb_get_hash_value(mrb, hash, "type"));
 
   if (mrb_fixnum_p(percent)) {
-    return (Clay_SizingAxis){.size = {.percent = mrb_fixnum(percent)},
-                             .type = type};
+    return (Clay_SizingAxis){.size = {.percent = mrb_fixnum(percent)}, .type = type};
   } else {
-    return (Clay_SizingAxis){
-        .size = {.minMax =
-                     (Clay_SizingMinMax){
-                         .min =
-                             mrb_fixnum(mrb_get_hash_value(mrb, hash, "min")),
-                         .max =
-                             mrb_fixnum(mrb_get_hash_value(mrb, hash, "max")),
-                     }},
-        .type = type};
+    return (Clay_SizingAxis){.size = {.minMax =
+                                          (Clay_SizingMinMax){
+                                              .min = mrb_fixnum(mrb_get_hash_value(mrb, hash, "min")),
+                                              .max = mrb_fixnum(mrb_get_hash_value(mrb, hash, "max")),
+                                          }},
+                             .type = type};
   }
 }
 
@@ -109,12 +97,9 @@ Clay_Sizing mrb_cast_clay_sizing(mrb_state* mrb, mrb_value hash) {
   return result;
 }
 
-Clay_ChildAlignment mrb_cast_clay_child_alignment(mrb_state* mrb,
-                                                  mrb_value hash) {
-  return (Clay_ChildAlignment){.x = (Clay_LayoutAlignmentX)mrb_fixnum(
-                                   mrb_get_hash_value(mrb, hash, "x")),
-                               .y = (Clay_LayoutAlignmentY)mrb_fixnum(
-                                   mrb_get_hash_value(mrb, hash, "y"))};
+Clay_ChildAlignment mrb_cast_clay_child_alignment(mrb_state* mrb, mrb_value hash) {
+  return (Clay_ChildAlignment){.x = (Clay_LayoutAlignmentX)mrb_fixnum(mrb_get_hash_value(mrb, hash, "x")),
+                               .y = (Clay_LayoutAlignmentY)mrb_fixnum(mrb_get_hash_value(mrb, hash, "y"))};
 }
 
 Clay_LayoutConfig mrb_cast_clay_layout_config(mrb_state* mrb, mrb_value hash) {
@@ -139,8 +124,7 @@ Clay_LayoutConfig mrb_cast_clay_layout_config(mrb_state* mrb, mrb_value hash) {
   if (mrb_hash_p(alignment)) {
     result.childAlignment = mrb_cast_clay_child_alignment(mrb, alignment);
   }
-  mrb_value layout_direction =
-      mrb_get_hash_value(mrb, hash, "layout_direction");
+  mrb_value layout_direction = mrb_get_hash_value(mrb, hash, "layout_direction");
   if (mrb_fixnum_p(layout_direction)) {
     result.layoutDirection = (Clay_LayoutDirection)mrb_fixnum(layout_direction);
   }
