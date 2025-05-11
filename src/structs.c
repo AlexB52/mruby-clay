@@ -61,7 +61,8 @@ Clay_BorderElementConfig mrb_cast_clay_border_config(mrb_state* mrb,
       .color = mrb_cast_clay_color(mrb, mrb_get_hash_value(mrb, hash, "color")),
       .backgroundColor = mrb_cast_clay_color(
           mrb, mrb_get_hash_value(mrb, hash, "background_color")),
-      .width = mrb_cast_clay_border_width(mrb, hash),
+      .width = mrb_cast_clay_border_width(
+          mrb, mrb_get_hash_value(mrb, hash, "width")),
   };
 }
 
@@ -147,21 +148,36 @@ Clay_LayoutConfig mrb_cast_clay_layout_config(mrb_state* mrb, mrb_value hash) {
   return result;
 }
 
+typedef struct {
+  mrb_state* mrb;
+  mrb_value blk;
+} clay_elem_ctx_t;
+
+#define CLAY_YIELD_BODY(ctx)                            \
+  do {                                                  \
+    if (!mrb_nil_p((ctx).blk))                          \
+      mrb_yield((ctx).mrb, (ctx).blk, mrb_nil_value()); \
+  } while (0)
+
+// typedef struct {
+//     Clay_ElementId id;
+//     Clay_LayoutConfig layout;
+//     Clay_Color backgroundColor;
+//     Clay_CornerRadius cornerRadius;
+//     Clay_ImageElementConfig image;
+//     Clay_FloatingElementConfig floating;
+//     Clay_CustomElementConfig custom;
+//     Clay_ClipElementConfig clip;
+//     Clay_BorderElementConfig border;
+//     void *userData;
+// } Clay_ElementDeclaration;
+
 mrb_value mrb_clay_clay_ui(mrb_state* mrb, mrb_value self) {
   Clay_ElementDeclaration config = {};
 
+  mrb_value block = mrb_nil_value();
   mrb_value options = mrb_hash_new(mrb);
-  mrb_get_args(mrb, "H", &options);
-
-  mrb_value layout = mrb_get_hash_value(mrb, options, "layout");
-  if (mrb_hash_p(layout)) {
-    config.layout = mrb_cast_clay_layout_config(mrb, layout);
-  }
-
-  mrb_value border = mrb_get_hash_value(mrb, options, "border");
-  if (mrb_hash_p(border)) {
-    config.border = mrb_cast_clay_border_config(mrb, border);
-  }
+  mrb_get_args(mrb, "H|&", &options, &block);
 
   mrb_value id = mrb_get_hash_value(mrb, options, "id");
   if (mrb_string_p(id)) {
@@ -173,31 +189,52 @@ mrb_value mrb_clay_clay_ui(mrb_state* mrb, mrb_value self) {
     config.backgroundColor = mrb_cast_clay_color(mrb, bg_color);
   }
 
+  mrb_value layout = mrb_get_hash_value(mrb, options, "layout");
+  if (mrb_hash_p(layout)) {
+    config.layout = mrb_cast_clay_layout_config(mrb, layout);
+  }
+
+  mrb_value border = mrb_get_hash_value(mrb, options, "border");
+  if (mrb_hash_p(border)) {
+    config.border = mrb_cast_clay_border_config(mrb, border);
+  }
+
   mrb_value clip = mrb_get_hash_value(mrb, options, "clip");
   if (mrb_hash_p(clip)) {
     config.clip = mrb_cast_clay_clip_element_config(mrb, clip);
   }
 
-  printf("min: %f\n", config.layout.sizing.width.size.minMax.min);
-  printf("max: %f\n", config.layout.sizing.width.size.minMax.max);
-  printf("type: %d\n", config.layout.sizing.width.type);
+  // printf("min: %f\n", config.layout.sizing.width.size.minMax.min);
+  // printf("max: %f\n", config.layout.sizing.width.size.minMax.max);
+  // printf("percent: %f\n", config.layout.sizing.width.size.percent);
+  // printf("type: %d\n", config.layout.sizing.width.type);
 
-  printf("min: %f\n", config.layout.sizing.height.size.minMax.min);
-  printf("max: %f\n", config.layout.sizing.height.size.minMax.max);
-  printf("type: %d\n", config.layout.sizing.height.type);
+  // printf("min: %f\n", config.layout.sizing.height.size.minMax.min);
+  // printf("max: %f\n", config.layout.sizing.height.size.minMax.max);
+  // printf("percent: %f\n", config.layout.sizing.height.size.percent);
+  // printf("type: %d\n", config.layout.sizing.height.type);
 
-  printf("padding left: %d\n", config.layout.padding.left);
-  printf("padding top: %d\n", config.layout.padding.top);
-  printf("padding right: %d\n", config.layout.padding.right);
-  printf("padding bottom: %d\n", config.layout.padding.bottom);
+  // printf("padding left: %d\n", config.layout.padding.left);
+  // printf("padding top: %d\n", config.layout.padding.top);
+  // printf("padding right: %d\n", config.layout.padding.right);
+  // printf("padding bottom: %d\n", config.layout.padding.bottom);
 
-  printf("ID: %s\n", config.id.stringId.chars);
+  // printf("border left: %d\n", config.border.width.left);
+  // printf("border top: %d\n", config.border.width.top);
+  // printf("border right: %d\n", config.border.width.right);
+  // printf("border bottom: %d\n", config.border.width.bottom);
 
-  printf("color R: %f\n", config.backgroundColor.r);
-  printf("color G: %f\n", config.backgroundColor.g);
-  printf("color B: %f\n", config.backgroundColor.b);
-  printf("color A: %f\n", config.backgroundColor.a);
+  // printf("ID: %s\n", config.id.stringId.chars);
 
-  CLAY(config){};
+  // printf("color R: %f\n", config.backgroundColor.r);
+  // printf("color G: %f\n", config.backgroundColor.g);
+  // printf("color B: %f\n", config.backgroundColor.b);
+  // printf("color A: %f\n", config.backgroundColor.a);
+
+  clay_elem_ctx_t context = {mrb, block};
+  CLAY(config) {
+    CLAY_YIELD_BODY(context);
+  };
+
   return mrb_nil_value();
 }

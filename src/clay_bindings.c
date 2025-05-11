@@ -175,8 +175,10 @@ mrb_value mrb_clay_border_width(mrb_state* mrb, Clay_BorderWidth borderWidth) {
 mrb_value mrb_clay_rectangle_render_data(mrb_state* mrb,
                                          Clay_RectangleRenderData rectData,
                                          Clay_BoundingBox bbox) {
-  mrb_value result = mrb_hash_new_capa(mrb, 3);
+  mrb_value result = mrb_hash_new_capa(mrb, 4);
 
+  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "type"),
+               mrb_symbol_value(mrb_intern_lit(mrb, "rectangle")));
   mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "bounding_box"),
                mrb_clay_bounding_box(mrb, bbox));
   mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "background_color"),
@@ -188,7 +190,9 @@ mrb_value mrb_clay_rectangle_render_data(mrb_state* mrb,
 
 mrb_value mrb_clay_text_render_data(mrb_state* mrb,
                                     Clay_TextRenderData textData) {
-  mrb_value result = mrb_hash_new_capa(mrb, 7);
+  mrb_value result = mrb_hash_new_capa(mrb, 8);
+  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "type"),
+               mrb_symbol_value(mrb_intern_lit(mrb, "text")));
   mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "text"),
                mrb_str_new(mrb, textData.stringContents.chars,
                            textData.stringContents.length));
@@ -209,8 +213,13 @@ mrb_value mrb_clay_text_render_data(mrb_state* mrb,
 }
 
 mrb_value mrb_clay_border_render_data(mrb_state* mrb,
-                                      Clay_BorderRenderData borderData) {
-  mrb_value result = mrb_hash_new_capa(mrb, 4);
+                                      Clay_BorderRenderData borderData,
+                                      Clay_BoundingBox bbox) {
+  mrb_value result = mrb_hash_new_capa(mrb, 6);
+  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "type"),
+               mrb_symbol_value(mrb_intern_lit(mrb, "border")));
+  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "bounding_box"),
+               mrb_clay_bounding_box(mrb, bbox));
   mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "color"),
                mrb_clay_color(mrb, borderData.color));
   mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "background_color"),
@@ -222,13 +231,22 @@ mrb_value mrb_clay_border_render_data(mrb_state* mrb,
   return result;
 }
 
-mrb_value mrb_clay_clip_render_data(mrb_state* mrb,
-                                    Clay_ClipRenderData clipData) {
+mrb_value mrb_clay_clip_start_render_data(mrb_state* mrb,
+                                          Clay_BoundingBox bbox) {
   mrb_value result = mrb_hash_new_capa(mrb, 2);
-  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "horizontal"),
-               mrb_bool_value(clipData.horizontal));
-  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "vertical"),
-               mrb_bool_value(clipData.vertical));
+  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "type"),
+               mrb_symbol_value(mrb_intern_lit(mrb, "clip_start")));
+  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "bounding_box"),
+               mrb_clay_bounding_box(mrb, bbox));
+  return result;
+}
+
+mrb_value mrb_clay_clip_end_render_data(mrb_state* mrb, Clay_BoundingBox bbox) {
+  mrb_value result = mrb_hash_new_capa(mrb, 2);
+  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "type"),
+               mrb_symbol_value(mrb_intern_lit(mrb, "clip_end")));
+  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "bounding_box"),
+               mrb_clay_bounding_box(mrb, bbox));
   return result;
 }
 
@@ -240,7 +258,7 @@ mrb_value mrb_clay_end_layout(mrb_state* mrb, mrb_value self) {
     Clay_RenderCommand* renderCommand = &clay_commands.internalArray[i];
     switch (renderCommand->commandType) {
       case CLAY_RENDER_COMMAND_TYPE_RECTANGLE: {
-        printf("In type rectangle");
+        printf("In type rectangle\n");
         mrb_ary_set(mrb, commands, i,
                     mrb_clay_rectangle_render_data(
                         mrb, renderCommand->renderData.rectangle,
@@ -248,24 +266,31 @@ mrb_value mrb_clay_end_layout(mrb_state* mrb, mrb_value self) {
         break;
       }
       case CLAY_RENDER_COMMAND_TYPE_BORDER: {
-        printf("In type border");
+        printf("In type border\n");
         mrb_ary_set(
             mrb, commands, i,
-            mrb_clay_border_render_data(mrb, renderCommand->renderData.border));
+            mrb_clay_border_render_data(mrb, renderCommand->renderData.border,
+                                        renderCommand->boundingBox));
         break;
       }
       case CLAY_RENDER_COMMAND_TYPE_TEXT: {
-        printf("In type text");
+        printf("In type text\n");
         mrb_ary_set(
             mrb, commands, i,
             mrb_clay_text_render_data(mrb, renderCommand->renderData.text));
         break;
       }
-      case CLAY_RENDER_COMMAND_TYPE_SCISSOR_START:
+      case CLAY_RENDER_COMMAND_TYPE_SCISSOR_START: {
+        printf("In type scissor start\n");
+        mrb_ary_set(
+            mrb, commands, i,
+            mrb_clay_clip_start_render_data(mrb, renderCommand->boundingBox));
+      }
       case CLAY_RENDER_COMMAND_TYPE_SCISSOR_END: {
-        printf("In type scissor");
-        mrb_ary_set(mrb, commands, i,
-                    mrb_clay_bounding_box(mrb, renderCommand->boundingBox));
+        printf("In type scissor end\n");
+        mrb_ary_set(
+            mrb, commands, i,
+            mrb_clay_clip_end_render_data(mrb, renderCommand->boundingBox));
         break;
       }
       case CLAY_RENDER_COMMAND_TYPE_IMAGE:
