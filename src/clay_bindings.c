@@ -78,6 +78,7 @@ mrb_value mrb_clay_initialize(mrb_state* mrb, mrb_value self) {
   Clay_Arena arena = Clay_CreateArenaWithCapacityAndMemory(totalMemorySize, malloc(totalMemorySize));
 
   Clay_Initialize(arena, (Clay_Dimensions){width, height}, (Clay_ErrorHandler){HandleClayErrors});
+  mrb_cstring_arena_init(&bindingArena);
 
   return mrb_nil_value();
 }
@@ -200,30 +201,25 @@ mrb_value mrb_clay_end_layout(mrb_state* mrb, mrb_value self) {
     Clay_RenderCommand* renderCommand = &clay_commands.internalArray[i];
     switch (renderCommand->commandType) {
       case CLAY_RENDER_COMMAND_TYPE_RECTANGLE: {
-        printf("In type rectangle\n");
         mrb_ary_set(
             mrb, commands, i,
             mrb_clay_rectangle_render_data(mrb, renderCommand->renderData.rectangle, renderCommand->boundingBox));
         break;
       }
       case CLAY_RENDER_COMMAND_TYPE_BORDER: {
-        printf("In type border\n");
         mrb_ary_set(mrb, commands, i,
                     mrb_clay_border_render_data(mrb, renderCommand->renderData.border, renderCommand->boundingBox));
         break;
       }
       case CLAY_RENDER_COMMAND_TYPE_TEXT: {
-        printf("In type text\n");
         mrb_ary_set(mrb, commands, i,
                     mrb_clay_text_render_data(mrb, renderCommand->renderData.text, renderCommand->boundingBox));
         break;
       }
       case CLAY_RENDER_COMMAND_TYPE_SCISSOR_START: {
-        printf("In type scissor start\n");
         mrb_ary_set(mrb, commands, i, mrb_clay_clip_start_render_data(mrb, renderCommand->boundingBox));
       }
       case CLAY_RENDER_COMMAND_TYPE_SCISSOR_END: {
-        printf("In type scissor end\n");
         mrb_ary_set(mrb, commands, i, mrb_clay_clip_end_render_data(mrb, renderCommand->boundingBox));
         break;
       }
@@ -233,7 +229,7 @@ mrb_value mrb_clay_end_layout(mrb_state* mrb, mrb_value self) {
         break;
     }
   }
-
+  mrb_cstring_arena_clear(&bindingArena);
   return commands;
 }
 

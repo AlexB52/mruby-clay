@@ -2,16 +2,14 @@
 #include <mruby.h>
 #include <mruby/hash.h>
 #include <mruby/string.h>
+#include <stdlib.h>
 #include <string.h>
+#include "arena.h"
 
 // --- [CONFIG] ---
 
 mrb_value mrb_get_hash_value(mrb_state* mrb, mrb_value hash, const char* key) {
   mrb_value result = mrb_hash_get(mrb, hash, mrb_symbol_value(mrb_intern_cstr(mrb, key)));
-  // mrb_p(mrb, mrb_str_new_lit(mrb, "------------"));
-  // mrb_p(mrb, mrb_str_new_cstr(mrb, key));
-  // mrb_p(mrb, result);
-  // mrb_p(mrb, mrb_str_new_lit(mrb, "------------"));
   return result;
 }
 
@@ -159,19 +157,6 @@ typedef struct {
       mrb_yield((ctx).mrb, (ctx).blk, mrb_nil_value()); \
   } while (0)
 
-// typedef struct {
-//     Clay_ElementId id;
-//     Clay_LayoutConfig layout;
-//     Clay_Color backgroundColor;
-//     Clay_CornerRadius cornerRadius;
-//     Clay_ImageElementConfig image;
-//     Clay_FloatingElementConfig floating;
-//     Clay_CustomElementConfig custom;
-//     Clay_ClipElementConfig clip;
-//     Clay_BorderElementConfig border;
-//     void *userData;
-// } Clay_ElementDeclaration;
-
 mrb_value mrb_clay_clay_ui(mrb_state* mrb, mrb_value self) {
   Clay_ElementDeclaration config = {};
 
@@ -204,33 +189,6 @@ mrb_value mrb_clay_clay_ui(mrb_state* mrb, mrb_value self) {
     config.clip = mrb_cast_clay_clip_element_config(mrb, clip);
   }
 
-  // printf("min: %f\n", config.layout.sizing.width.size.minMax.min);
-  // printf("max: %f\n", config.layout.sizing.width.size.minMax.max);
-  // printf("percent: %f\n", config.layout.sizing.width.size.percent);
-  // printf("type: %d\n", config.layout.sizing.width.type);
-
-  // printf("min: %f\n", config.layout.sizing.height.size.minMax.min);
-  // printf("max: %f\n", config.layout.sizing.height.size.minMax.max);
-  // printf("percent: %f\n", config.layout.sizing.height.size.percent);
-  // printf("type: %d\n", config.layout.sizing.height.type);
-
-  // printf("padding left: %d\n", config.layout.padding.left);
-  // printf("padding top: %d\n", config.layout.padding.top);
-  // printf("padding right: %d\n", config.layout.padding.right);
-  // printf("padding bottom: %d\n", config.layout.padding.bottom);
-
-  // printf("border left: %d\n", config.border.width.left);
-  // printf("border top: %d\n", config.border.width.top);
-  // printf("border right: %d\n", config.border.width.right);
-  // printf("border bottom: %d\n", config.border.width.bottom);
-
-  // printf("ID: %s\n", config.id.stringId.chars);
-
-  // printf("color R: %f\n", config.backgroundColor.r);
-  // printf("color G: %f\n", config.backgroundColor.g);
-  // printf("color B: %f\n", config.backgroundColor.b);
-  // printf("color A: %f\n", config.backgroundColor.a);
-
   clay_elem_ctx_t context = {mrb, block};
   CLAY(config) {
     CLAY_YIELD_BODY(context);
@@ -238,26 +196,6 @@ mrb_value mrb_clay_clay_ui(mrb_state* mrb, mrb_value self) {
 
   return mrb_nil_value();
 }
-
-// typedef struct {
-//     void *userData;
-//     Clay_Color textColor;
-//     Clay_Color backgroundColor;
-//     uint16_t fontId;
-//     uint16_t fontSize;
-//     uint16_t letterSpacing;
-//     uint16_t lineHeight;
-//     // CLAY_TEXT_WRAP_WORDS (default) breaks on whitespace characters.
-//     // CLAY_TEXT_WRAP_NEWLINES doesn't break on space characters, only on newlines.
-//     // CLAY_TEXT_WRAP_NONE disables wrapping entirely.
-//     Clay_TextElementConfigWrapMode wrapMode;
-//     // Controls how wrapped lines of text are horizontally aligned within the outer text bounding box.
-//     // CLAY_TEXT_ALIGN_LEFT (default) - Horizontally aligns wrapped lines of text to the left hand side of their
-//     bounding box.
-//     // CLAY_TEXT_ALIGN_CENTER - Horizontally aligns wrapped lines of text to the center of their bounding box.
-//     // CLAY_TEXT_ALIGN_RIGHT - Horizontally aligns wrapped lines of text to the right hand side of their bounding
-//     box. Clay_TextAlignment textAlignment;
-// } Clay_TextElementConfig;
 
 mrb_value mrb_clay_clay_text(mrb_state* mrb, mrb_value self) {
   const char* cstr;
@@ -269,10 +207,10 @@ mrb_value mrb_clay_clay_text(mrb_state* mrb, mrb_value self) {
     options = mrb_hash_new(mrb);
   }
 
-  printf("text: %s\n", cstr);
   Clay_TextElementConfig config = mrb_cast_clay_text_config(mrb, options);
+  const char* ctext = mrb_cstring_arena_strdup(&bindingArena, cstr);
+  Clay_String clay_text = {.chars = ctext, .length = len, .isStaticallyAllocated = false};
 
-  Clay_String clay_text = {.chars = cstr, .length = len, .isStaticallyAllocated = false};
   CLAY_TEXT(clay_text, CLAY_TEXT_CONFIG(config));
 
   return mrb_nil_value();

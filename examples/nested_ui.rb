@@ -38,7 +38,7 @@ Clay.ui(
         height: { type: 1 },
       }
     }
-  ) do 
+  ) do
     Clay.text("Hello, World!", color: { r:255, g: 255, b:0, a: 255 })
     Clay.text("Hello, World22222!", color: { r:255, g: 255, b:0, a: 255 })
   end
