@@ -10,6 +10,14 @@ module Clay
           _to_h
         end
       end
+
+      def ==(other)
+        if other.is_a?(Hash)
+          return other == to_h(:sym_keys) || other == to_h(:string_keys)
+        end
+
+        super
+      end
     end
 
     RED = Color.new(255, 0, 0, 255)

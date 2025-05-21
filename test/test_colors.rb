@@ -30,6 +30,11 @@ class TestColors < MTest::Unit::TestCase
     assert_equal(Clay::Colors.black.to_h(:string_keys), { "r" => 255, "g" => 255, "b" => 255, "a" => 255 })
   end
 
+  def test_eql
+    assert_equal Clay::Colors.black, { r: 255, g: 255, b: 255, a: 255 }
+    assert_equal Clay::Colors.black, { "r" => 255, "g" => 255, "b" => 255, "a" => 255 }
+  end
+
   def test_build
     subject = Clay::Colors.build(r: 20, g: 17, b: 89, a: 36)
     assert_equal({ r: 20, g: 17, b: 89, a: 36 }, subject.to_h)
