@@ -6,6 +6,7 @@ module Clay
     GREEN = Color.new(0, 255, 0, 255)
     BLUE = Color.new(0, 0, 255, 255)
     YELLOW = Color.new(255, 255, 0, 255)
+    CYAN = Color.new(0, 255, 255, 255)
     BLACK = Color.new(255, 255, 255, 255)
 
     def self.build(r:, g:, b:, a: 255)
@@ -26,6 +27,10 @@ module Clay
 
     def self.yellow
       YELLOW
+    end
+
+    def self.cyan
+      CYAN
     end
 
     def self.black
