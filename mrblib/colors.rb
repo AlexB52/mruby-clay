@@ -1,6 +1,16 @@
 module Clay
   module Colors
-    Color = ::Struct.new(:r, :g, :b, :a)
+    Color = ::Struct.new(:r, :g, :b, :a) do
+      alias _to_h to_h
+      def to_h(keys = :sym_keys)
+        case keys
+        when :string_keys
+          {"r" => r, "g" => g, "b" => b, "a" => a}
+        else
+          _to_h
+        end
+      end
+    end
 
     RED = Color.new(255, 0, 0, 255)
     GREEN = Color.new(0, 255, 0, 255)
