@@ -20,39 +20,25 @@ module Clay
       end
     end
 
-    RED = Color.new(255, 0, 0, 255)
-    GREEN = Color.new(0, 255, 0, 255)
-    BLUE = Color.new(0, 0, 255, 255)
-    YELLOW = Color.new(255, 255, 0, 255)
-    CYAN = Color.new(0, 255, 255, 255)
-    BLACK = Color.new(255, 255, 255, 255)
+    DEFAULT_COLORS = {
+      :red    => Color.new(255, 0, 0, 255),
+      :green  => Color.new(0, 255, 0, 255),
+      :blue   => Color.new(0, 0, 255, 255),
+      :yellow => Color.new(255, 255, 0, 255),
+      :cyan   => Color.new(0, 255, 255, 255),
+      :black  => Color.new(255, 255, 255, 255),
+    }
+
+    # The syntax highlighting doesn't work but this is valid ruby in the latest versions.
+    def self.red    = DEFAULT_COLORS[:red]
+    def self.green  = DEFAULT_COLORS[:green]
+    def self.blue   = DEFAULT_COLORS[:blue]
+    def self.yellow = DEFAULT_COLORS[:yellow]
+    def self.cyan   = DEFAULT_COLORS[:cyan]
+    def self.black  = DEFAULT_COLORS[:black]
 
     def self.build(r:, g:, b:, a: 255)
       Color.new(r,g,b,a)
-    end
-
-    def self.red
-      RED
-    end
-
-    def self.green
-      GREEN
-    end
-
-    def self.blue
-      BLUE
-    end
-
-    def self.yellow
-      YELLOW
-    end
-
-    def self.cyan
-      CYAN
-    end
-
-    def self.black
-      BLACK
     end
   end
 end
