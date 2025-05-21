@@ -1,4 +1,4 @@
-class TestBasic < MTest::Unit::TestCase
+class TestRectangle < MTest::Unit::TestCase
   def test_commands
     Clay.init(60, 40) do |error|
       raise error[:message]
@@ -14,7 +14,7 @@ class TestBasic < MTest::Unit::TestCase
 
     Clay.ui(
       id: "root",
-      background_color: { r:255, g:0, b:0, a: 255 },
+      background_color: Clay::Colors.red.to_h,
       layout: {
         padding: {
           top:1, left:1, right: 1, bottom: 1
