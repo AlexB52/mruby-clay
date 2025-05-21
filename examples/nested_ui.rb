@@ -12,7 +12,7 @@ Clay.begin_layout
 
 Clay.ui(
   id: "root",
-  background_color: { r:255, g:0, b:0, a: 255 },
+  background_color: Clay::Colors.red.to_h,
   layout: {
     padding: {top: 1, right: 1, bottom: 1, left: 1},
     child_gap: 1,
@@ -24,10 +24,10 @@ Clay.ui(
 ) do
   Clay.ui(
     id: "first",
-    background_color: { r:0, g: 255, b:0, a: 255 },
+    background_color: Clay::Colors.green.to_h,
     border: {
-      background_color: { r:0, g: 255, b:0, a: 255 },
-      color: { r:0, g: 255, b:0, a: 255 },
+      background_color: Clay::Colors.green.to_h,
+      color: Clay::Colors.green.to_h,
       width: {
         left: 1, top: 1, right: 1, bottom: 1
       }
@@ -39,20 +39,20 @@ Clay.ui(
       }
     }
   ) do
-    Clay.text("Hello, World!", color: { r:255, g: 255, b:0, a: 255 })
-    Clay.text("Hello, World22222!", color: { r:255, g: 255, b:0, a: 255 })
+    Clay.text("Hello, World!", color: Clay::Colors.yellow.to_h)
+    Clay.text("Hello, World22222!", color: Clay::Colors.yellow.to_h)
   end
 
   Clay.ui(
     id: "second",
-    background_color: { r:0, g:0, b:255, a: 255 },
+    background_color: Clay::Colors.blue.to_h,
     layout: {
       sizing: {
         width: { type: 1 },
         height: { type: 1 },
       }
     }
-  ) { Clay.text("Hello!", color: {r: 255, g:255, b:255, a:255}) }
+  ) { Clay.text("Hello!", color: Clay::Colors.black.to_h) }
 
 end
 
