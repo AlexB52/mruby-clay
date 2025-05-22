@@ -9,12 +9,13 @@ task :mtest do
 
   Tempfile.open("test_file") do |test_file|
     content = ""
+
     mruby_files.each do |file|
-      content += File.read(file)
+      content += File.read(file) + "\n"
     end
 
     test_files.each do |file|
-      content += File.read(file).gsub("MTest::Unit.new.run", "")
+      content += File.read(file).gsub("MTest::Unit.new.run", "") + "\n"
     end
 
     content += <<~RUBY
@@ -26,7 +27,7 @@ task :mtest do
     test_file.write(content)
     test_file.rewind
 
-    exit system("#{mruby_binary} #{test_file.path}", err: File::NULL)
+    exit system("#{mruby_binary} #{test_file.path}")
   end
 end
 
