@@ -17,9 +17,7 @@ class TestNestedLayout < MTest::Unit::TestCase
       id: "parent",
       background_color: Clay::Colors.green.to_h,
       layout: {
-        padding: {
-          top:1, left:1, right: 1, bottom: 1
-        },
+        padding: Clay::Padding[1],
         sizing: {
           width: { min: 20, max: 20, type: 3 },
           height: { min: 20, max: 20, type: 3 },
