@@ -1,5 +1,6 @@
 #define CLAY_IMPLEMENTATION
 #include <clay.h>
+#include "helpers.c"
 #include "structs.c"
 
 // #define TB_IMPL
@@ -111,10 +112,10 @@ mrb_value mrb_clay_begin_layout() {
 
 mrb_value mrb_clay_color(mrb_state* mrb, Clay_Color color) {
   mrb_value result = mrb_hash_new_capa(mrb, 4);
-  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "r"), mrb_float_value(mrb, color.r));
-  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "g"), mrb_float_value(mrb, color.g));
-  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "b"), mrb_float_value(mrb, color.b));
-  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "a"), mrb_float_value(mrb, color.a));
+  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "r"), mrb_float_value(mrb, round_to_2_decimal(color.r)));
+  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "g"), mrb_float_value(mrb, round_to_2_decimal(color.g)));
+  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "b"), mrb_float_value(mrb, round_to_2_decimal(color.b)));
+  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "a"), mrb_float_value(mrb, round_to_2_decimal(color.a)));
   return result;
 }
 
