@@ -34,10 +34,23 @@ Clay_Vector2 mrb_cast_clay_vector2(mrb_state* mrb, mrb_value hash) {
 }
 
 Clay_ClipElementConfig mrb_cast_clay_clip_element_config(mrb_state* mrb, mrb_value hash) {
-  mrb_value child_offset = mrb_get_hash_value(mrb, hash, "childOffset");
-  return (Clay_ClipElementConfig){.vertical = mrb_bool(mrb_get_hash_value(mrb, hash, "vertical")),
-                                  .horizontal = mrb_bool(mrb_get_hash_value(mrb, hash, "horizontal")),
-                                  .childOffset = mrb_cast_clay_vector2(mrb, child_offset)};
+  Clay_ClipElementConfig result = {};
+  mrb_value child_offset = mrb_get_hash_value(mrb, hash, "child_offset");
+  if (mrb_hash_p(child_offset)) {
+    result.childOffset = mrb_cast_clay_vector2(mrb, child_offset);
+  }
+
+  mrb_value vertical = mrb_get_hash_value(mrb, hash, "vertical");
+  if (!mrb_nil_p(vertical)) {
+    result.vertical = mrb_bool(vertical);
+  }
+
+  mrb_value horizontal = mrb_get_hash_value(mrb, hash, "horizontal");
+  if (!mrb_nil_p(horizontal)) {
+    result.horizontal = mrb_bool(horizontal);
+  }
+
+  return result;
 }
 
 Clay_BorderWidth mrb_cast_clay_border_width(mrb_state* mrb, mrb_value hash) {
@@ -133,7 +146,11 @@ Clay_LayoutConfig mrb_cast_clay_layout_config(mrb_state* mrb, mrb_value hash) {
 Clay_TextElementConfig mrb_cast_clay_text_config(mrb_state* mrb, mrb_value hash) {
   Clay_TextElementConfig result;
 
-  result.textAlignment = (Clay_TextAlignment)mrb_fixnum(mrb_get_hash_value(mrb, hash, "text_alignment"));
+  mrb_value text_alignment = mrb_get_hash_value(mrb, hash, "text_alignment");
+  if (mrb_fixnum_p(text_alignment)) {
+    result.textAlignment = (Clay_TextAlignment)mrb_fixnum(text_alignment);
+  }
+
   mrb_value color = mrb_get_hash_value(mrb, hash, "color");
   if (mrb_hash_p(color)) {
     result.textColor = mrb_cast_clay_color(mrb, color);
@@ -150,12 +167,6 @@ typedef struct {
   mrb_state* mrb;
   mrb_value blk;
 } clay_elem_ctx_t;
-
-#define CLAY_YIELD_BODY(ctx)                            \
-  do {                                                  \
-    if (!mrb_nil_p((ctx).blk))                          \
-      mrb_yield((ctx).mrb, (ctx).blk, mrb_nil_value()); \
-  } while (0)
 
 mrb_value mrb_clay_clay_ui(mrb_state* mrb, mrb_value self) {
   Clay_ElementDeclaration config = {};
@@ -190,8 +201,11 @@ mrb_value mrb_clay_clay_ui(mrb_state* mrb, mrb_value self) {
   }
 
   clay_elem_ctx_t context = {mrb, block};
+
   CLAY(config) {
-    CLAY_YIELD_BODY(context);
+    if (!mrb_nil_p(context.blk)) {
+      mrb_yield(context.mrb, context.blk, mrb_nil_value());
+    }
   };
 
   return mrb_nil_value();
