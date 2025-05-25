@@ -17,8 +17,8 @@ class TestRectangle < MTest::Unit::TestCase
       background_color: Clay::Colors.red.to_h,
       layout: {
         sizing: {
-          width: { min: 20, max: 20, type: 3 },
-          height: { min: 20, max: 20, type: 3 },
+          width: Clay::Sizing.fixed(20),
+          height: Clay::Sizing.fixed(20),
         }
       }
     )

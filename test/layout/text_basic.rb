@@ -18,8 +18,8 @@ class TestTextBasic < MTest::Unit::TestCase
       layout: {
         padding: Clay::Padding[1],
         sizing: {
-          width: { min: 20, max: 20, type: 3 },
-          height: { min: 20, max: 20, type: 3 },
+          width: Clay::Sizing.fixed(20),
+          height: Clay::Sizing.fixed(20),
         }
       }
     ) do
