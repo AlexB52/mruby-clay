@@ -1,0 +1,97 @@
+# Clay Render Commands Dump
+- type: rectangle
+  bounding_box:
+    x: 0.00
+    y: 0.00
+    width: 20.00
+    height: 20.00
+  background_color:
+    r: 255
+    g: 0
+    b: 0
+    a: 255
+  corner_radius:
+    top_left: 0.00
+    top_right: 0.00
+    bottom_left: 0.00
+    bottom_right: 0.00
+- type: text
+  bounding_box:
+    x: 1.50
+    y: 1.00
+    width: 17.00
+    height: 1.00
+  text: "Lorem ipsum dolor"
+  text_color:
+    r: 255
+    g: 255
+    b: 0
+    a: 255
+  font_id: 0
+  font_size: 0
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 6.00
+    y: 2.00
+    width: 8.00
+    height: 1.00
+  text: "it amet,"
+  text_color:
+    r: 255
+    g: 255
+    b: 0
+    a: 255
+  font_id: 0
+  font_size: 0
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 4.50
+    y: 3.00
+    width: 11.00
+    height: 1.00
+  text: "consectetur"
+  text_color:
+    r: 255
+    g: 255
+    b: 0
+    a: 255
+  font_id: 0
+  font_size: 0
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 1.50
+    y: 4.00
+    width: 17.00
+    height: 1.00
+  text: "adipisicing elit,"
+  text_color:
+    r: 255
+    g: 255
+    b: 0
+    a: 255
+  font_id: 0
+  font_size: 0
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 8.50
+    y: 5.00
+    width: 3.00
+    height: 1.00
+  text: "sed"
+  text_color:
+    r: 255
+    g: 255
+    b: 0
+    a: 255
+  font_id: 0
+  font_size: 0
+  letter_spacing: 0
+  line_height: 0

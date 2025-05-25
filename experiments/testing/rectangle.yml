@@ -1,0 +1,17 @@
+# Clay Render Commands Dump
+- type: rectangle
+  bounding_box:
+    x: 0.00
+    y: 0.00
+    width: 20.00
+    height: 20.00
+  background_color:
+    r: 255
+    g: 0
+    b: 0
+    a: 255
+  corner_radius:
+    top_left: 0.00
+    top_right: 0.00
+    bottom_left: 0.00
+    bottom_right: 0.00
