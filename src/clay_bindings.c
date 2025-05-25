@@ -256,7 +256,7 @@ static Clay_Dimensions measure_text_callback(Clay_StringSlice text, Clay_TextEle
   mrb_value height = mrb_ary_ref(CLAY_mrb, ret, 1);
 
   // return (Clay_Dimensions){.width = (float)text.length, .height = 1.0f};
-  return (Clay_Dimensions){.width = mrb_fixnum(width), .height = mrb_float(height)};
+  return (Clay_Dimensions){.width = mrb_float(width), .height = mrb_float(height)};
 }
 
 static mrb_value mrb_clay_set_measure_text(mrb_state* mrb, mrb_value self) {

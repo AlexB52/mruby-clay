@@ -144,7 +144,7 @@ Clay_LayoutConfig mrb_cast_clay_layout_config(mrb_state* mrb, mrb_value hash) {
 }
 
 Clay_TextElementConfig mrb_cast_clay_text_config(mrb_state* mrb, mrb_value hash) {
-  Clay_TextElementConfig result;
+  Clay_TextElementConfig result = {0};
 
   mrb_value text_alignment = mrb_get_hash_value(mrb, hash, "text_alignment");
   if (mrb_fixnum_p(text_alignment)) {
