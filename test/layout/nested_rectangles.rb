@@ -29,8 +29,8 @@ class TestNestedLayout < MTest::Unit::TestCase
         background_color: Clay::Colors.red.to_h,
         layout: {
           sizing: {
-            width: { type: 1 },
-            height: { type: 1 },
+            width: Clay::Sizing.grow,
+            height: Clay::Sizing.grow,
           }
         }
       )
@@ -39,8 +39,8 @@ class TestNestedLayout < MTest::Unit::TestCase
         background_color: Clay::Colors.blue.to_h,
         layout: {
           sizing: {
-            width: { type: 1 },
-            height: { type: 1 },
+            width: Clay::Sizing.grow,
+            height: Clay::Sizing.grow,
           }
         }
       )

@@ -20,12 +20,20 @@ module Clay
     # Clamps the axis size to an exact size in pixels.
     TYPE_FIXED = 3
 
-    def self.fit(min, max)
-      { type: TYPE_FIT, min: min, max: max }
+    def self.fit(min = 0, max = nil)
+      result = { type: TYPE_FIT, min: min }
+      if max
+        result.merge!(max: max)
+      end
+      result
     end
 
-    def self.grow(min, max)
-      { type: TYPE_GROW, min: min, max: max }
+    def self.grow(min = 0, max = nil)
+      result = { type: TYPE_GROW, min: min }
+      if max
+        result.merge!(max: max)
+      end
+      result
     end
 
     def self.fixed(width)
