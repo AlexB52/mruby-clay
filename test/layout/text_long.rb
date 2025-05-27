@@ -1,4 +1,4 @@
-class TestTextBasic < MTest::Unit::TestCase
+class TestTextLong < MTest::Unit::TestCase
   def test_commands
     Clay.init(60, 40) do |error|
       raise error[:message]
