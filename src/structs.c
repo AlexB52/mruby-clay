@@ -151,6 +151,17 @@ Clay_TextElementConfig mrb_cast_clay_text_config(mrb_state* mrb, mrb_value hash)
     result.textAlignment = (Clay_TextAlignment)mrb_fixnum(text_alignment);
   }
 
+  if (mrb_symbol_p(text_alignment)) {
+    mrb_sym sym = mrb_symbol(text_alignment);
+    if (sym == mrb_intern_lit(mrb, "left")) {
+      result.textAlignment = CLAY_TEXT_ALIGN_LEFT;
+    } else if (sym == mrb_intern_lit(mrb, "center")) {
+      result.textAlignment = CLAY_TEXT_ALIGN_CENTER;
+    } else if (sym == mrb_intern_lit(mrb, "right")) {
+      result.textAlignment = CLAY_TEXT_ALIGN_RIGHT;
+    }
+  }
+
   mrb_value color = mrb_get_hash_value(mrb, hash, "color");
   if (mrb_hash_p(color)) {
     result.textColor = mrb_cast_clay_color(mrb, color);

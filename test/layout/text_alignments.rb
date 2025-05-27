@@ -1,4 +1,4 @@
-class TestTextBasic < MTest::Unit::TestCase
+class TestTextAlignment < MTest::Unit::TestCase
   def test_commands
     Clay.init(60, 40) do |error|
       raise error[:message]
@@ -27,7 +27,7 @@ class TestTextBasic < MTest::Unit::TestCase
         "Lorem ipsum dolor it amet, consectetur adipisicing elit, sed",
         color: Clay::Colors.yellow.to_h,
         background_color: Clay::Colors.yellow.to_h,
-        text_alignment: 1,
+        text_alignment: :center,
       )
     end
 
