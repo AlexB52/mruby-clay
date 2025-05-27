@@ -17,7 +17,7 @@
     bottom_right: 0.00
 - type: text
   bounding_box:
-    x: 1.00
+    x: 3.50
     y: 1.00
     width: 13.00
     height: 1.00

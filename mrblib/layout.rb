@@ -31,7 +31,7 @@ module Clay
       center: ALIGNMENT_CENTER,
     }
 
-    def self.[](x, y)
+    def self.[](x = nil, y = nil)
       {
         x: (X_MAPPING[x] || ALIGNMENT_LEFT),
         y: (Y_MAPPING[y] || ALIGNMENT_TOP)

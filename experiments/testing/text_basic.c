@@ -21,10 +21,8 @@ int main() {
   CLAY({.id = CLAY_ID("root"),
         .backgroundColor = COLOR_RED,
         .layout = {.padding = CLAY_PADDING_ALL(1),
-                   .sizing = {.width = {.type = CLAY__SIZING_TYPE_FIXED, .size = {.minMax = {.min = 20, .max = 20}}},
-                              .height = {.type = CLAY__SIZING_TYPE_FIXED, .size = {.minMax = {.min = 20, .max = 20}}}}}
-
-  }) {
+                   .childAlignment = CLAY_ALIGN_X_CENTER,
+                   .sizing = {.width = CLAY_SIZING_FIXED(20), .height = CLAY_SIZING_FIXED(20)}}}) {
     CLAY_TEXT(CLAY_STRING("Hello, world!"), CLAY_TEXT_CONFIG({.textColor = COLOR_YELLOW}));
   }
 
