@@ -15,6 +15,7 @@ class TestRectangle < MTest::Unit::TestCase
     Clay.ui(
       id: "root",
       background_color: Clay::Colors.red.to_h,
+      corner_radius: { top_left: 10, top_right: 10, bottom_left: 10, bottom_right: 10 },
       layout: {
         sizing: {
           width: Clay::Sizing.fixed(20),
@@ -29,7 +30,7 @@ class TestRectangle < MTest::Unit::TestCase
       "type" => :rectangle,
       "background_color" => { "r" => 255, "g" => 0, "b" => 0, "a" => 255 },
       "bounding_box" => { "x" => 0.0, "y" => 0.0, "width" => 20.0, "height" => 20.0 },
-      "corner_radius" => { "top_left" => 0.0, "top_right" => 0.0, "bottom_left" => 0.0, "bottom_right" => 0.0 }
+      "corner_radius" => { "top_left" => 10.0, "top_right" => 10.0, "bottom_left" => 10.0, "bottom_right" => 10.0 },
     }], commands)
 
   end

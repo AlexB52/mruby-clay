@@ -143,6 +143,16 @@ Clay_LayoutConfig mrb_cast_clay_layout_config(mrb_state* mrb, mrb_value hash) {
   return result;
 }
 
+Clay_CornerRadius mrb_cast_clay_corners_config(mrb_state* mrb, mrb_value hash) {
+  Clay_CornerRadius result = {0};
+  return (Clay_CornerRadius){
+      .topLeft = mrb_fixnum(mrb_get_hash_value(mrb, hash, "top_left")),
+      .topRight = mrb_fixnum(mrb_get_hash_value(mrb, hash, "top_right")),
+      .bottomLeft = mrb_fixnum(mrb_get_hash_value(mrb, hash, "bottom_left")),
+      .bottomRight = mrb_fixnum(mrb_get_hash_value(mrb, hash, "bottom_right")),
+  };
+}
+
 Clay_TextElementConfig mrb_cast_clay_text_config(mrb_state* mrb, mrb_value hash) {
   Clay_TextElementConfig result = {0};
 
@@ -209,6 +219,11 @@ mrb_value mrb_clay_clay_ui(mrb_state* mrb, mrb_value self) {
   mrb_value clip = mrb_get_hash_value(mrb, options, "clip");
   if (mrb_hash_p(clip)) {
     config.clip = mrb_cast_clay_clip_element_config(mrb, clip);
+  }
+
+  mrb_value corners = mrb_get_hash_value(mrb, options, "corner_radius");
+  if (mrb_hash_p(corners)) {
+    config.cornerRadius = mrb_cast_clay_corners_config(mrb, corners);
   }
 
   clay_elem_ctx_t context = {mrb, block};
