@@ -1,0 +1,569 @@
+# Clay Render Commands Dump
+- type: rectangle
+  bounding_box:
+    x: 0.00
+    y: 0.00
+    width: 10000.00
+    height: 10000.00
+  background_color:
+    r: 43
+    g: 41
+    b: 51
+    a: 255
+  corner_radius:
+    top_left: 0.00
+    top_right: 0.00
+    bottom_left: 0.00
+    bottom_right: 0.00
+- type: rectangle
+  bounding_box:
+    x: 16.00
+    y: 16.00
+    width: 9968.00
+    height: 60.00
+  background_color:
+    r: 90
+    g: 90
+    b: 90
+    a: 255
+  corner_radius:
+    top_left: 8.00
+    top_right: 8.00
+    bottom_left: 8.00
+    bottom_right: 8.00
+- type: rectangle
+  bounding_box:
+    x: 32.00
+    y: 37.50
+    width: 36.00
+    height: 17.00
+  background_color:
+    r: 140
+    g: 140
+    b: 140
+    a: 255
+  corner_radius:
+    top_left: 5.00
+    top_right: 5.00
+    bottom_left: 5.00
+    bottom_right: 5.00
+- type: text
+  bounding_box:
+    x: 48.00
+    y: 45.50
+    width: 4.00
+    height: 1.00
+  text: "File"
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 16
+  letter_spacing: 0
+  line_height: 0
+- type: rectangle
+  bounding_box:
+    x: 84.00
+    y: 37.50
+    width: 36.00
+    height: 17.00
+  background_color:
+    r: 140
+    g: 140
+    b: 140
+    a: 255
+  corner_radius:
+    top_left: 5.00
+    top_right: 5.00
+    bottom_left: 5.00
+    bottom_right: 5.00
+- type: text
+  bounding_box:
+    x: 100.00
+    y: 45.50
+    width: 4.00
+    height: 1.00
+  text: "Edit"
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 16
+  letter_spacing: 0
+  line_height: 0
+- type: rectangle
+  bounding_box:
+    x: 9822.00
+    y: 37.50
+    width: 38.00
+    height: 17.00
+  background_color:
+    r: 140
+    g: 140
+    b: 140
+    a: 255
+  corner_radius:
+    top_left: 5.00
+    top_right: 5.00
+    bottom_left: 5.00
+    bottom_right: 5.00
+- type: text
+  bounding_box:
+    x: 9838.00
+    y: 45.50
+    width: 6.00
+    height: 1.00
+  text: "Upload"
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 16
+  letter_spacing: 0
+  line_height: 0
+- type: rectangle
+  bounding_box:
+    x: 9876.00
+    y: 37.50
+    width: 37.00
+    height: 17.00
+  background_color:
+    r: 140
+    g: 140
+    b: 140
+    a: 255
+  corner_radius:
+    top_left: 5.00
+    top_right: 5.00
+    bottom_left: 5.00
+    bottom_right: 5.00
+- type: text
+  bounding_box:
+    x: 9892.00
+    y: 45.50
+    width: 5.00
+    height: 1.00
+  text: "Media"
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 16
+  letter_spacing: 0
+  line_height: 0
+- type: rectangle
+  bounding_box:
+    x: 9929.00
+    y: 37.50
+    width: 39.00
+    height: 17.00
+  background_color:
+    r: 140
+    g: 140
+    b: 140
+    a: 255
+  corner_radius:
+    top_left: 5.00
+    top_right: 5.00
+    bottom_left: 5.00
+    bottom_right: 5.00
+- type: text
+  bounding_box:
+    x: 9945.00
+    y: 45.50
+    width: 7.00
+    height: 1.00
+  text: "Support"
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 16
+  letter_spacing: 0
+  line_height: 0
+- type: rectangle
+  bounding_box:
+    x: 16.00
+    y: 92.00
+    width: 250.00
+    height: 9892.00
+  background_color:
+    r: 90
+    g: 90
+    b: 90
+    a: 255
+  corner_radius:
+    top_left: 0.00
+    top_right: 0.00
+    bottom_left: 0.00
+    bottom_right: 0.00
+- type: rectangle
+  bounding_box:
+    x: 32.00
+    y: 108.00
+    width: 218.00
+    height: 33.00
+  background_color:
+    r: 120
+    g: 120
+    b: 120
+    a: 255
+  corner_radius:
+    top_left: 8.00
+    top_right: 8.00
+    bottom_left: 8.00
+    bottom_right: 8.00
+- type: text
+  bounding_box:
+    x: 48.00
+    y: 124.00
+    width: 9.00
+    height: 1.00
+  text: "Squirrels"
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 20
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 48.00
+    y: 165.00
+    width: 11.00
+    height: 1.00
+  text: "Lorem Ipsum"
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 20
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 48.00
+    y: 206.00
+    width: 19.00
+    height: 1.00
+  text: "Vacuum Instructions"
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 20
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 48.00
+    y: 247.00
+    width: 9.00
+    height: 1.00
+  text: "Article 4"
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 20
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 48.00
+    y: 288.00
+    width: 9.00
+    height: 1.00
+  text: "Article 5"
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 20
+  letter_spacing: 0
+  line_height: 0
+- type: scissor_start
+  bounding_box:
+    x: 282.00
+    y: 92.00
+    width: 9702.00
+    height: 9892.00
+- type: rectangle
+  bounding_box:
+    x: 282.00
+    y: 92.00
+    width: 9702.00
+    height: 9892.00
+  background_color:
+    r: 90
+    g: 90
+    b: 90
+    a: 255
+  corner_radius:
+    top_left: 0.00
+    top_right: 0.00
+    bottom_left: 0.00
+    bottom_right: 0.00
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 108.00
+    width: 9.00
+    height: 1.00
+  text: "Squirrels"
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 125.00
+    width: 54.00
+    height: 1.00
+  text: "The Secret Life of Squirrels: Nature's Clever Acrobats"
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 126.00
+    width: 527.00
+    height: 1.00
+  text: "Squirrels are often overlooked creatures, dismissed as mere park inhabitants or backyard nuisances. Yet, beneath their fluffy tails and twitching noses lies an intricate world of cunning, agility, and survival tactics that are nothing short of fascinating. As one of the most common mammals in North America, squirrels have adapted to a wide range of environments from bustling urban centers to tranquil forests and have developed a variety of unique behaviors that continue to intrigue scientists and nature enthusiasts alike."
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 128.00
+    width: 20.00
+    height: 1.00
+  text: "Master Tree Climbers"
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 129.00
+    width: 506.00
+    height: 1.00
+  text: "At the heart of a squirrel's skill set is its impressive ability to navigate trees with ease. Whether they're darting from branch to branch or leaping across wide gaps, squirrels possess an innate talent for acrobatics. Their powerful hind legs, which are longer than their front legs, give them remarkable jumping power. With a tail that acts as a counterbalance, squirrels can leap distances of up to ten times the length of their body, making them some of the best aerial acrobats in the animal kingdom."
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 130.00
+    width: 399.00
+    height: 1.00
+  text: "But it's not just their agility that makes them exceptional climbers. Squirrels' sharp, curved claws allow them to grip tree bark with precision, while the soft pads on their feet provide traction on slippery surfaces. Their ability to run at high speeds and scale vertical trunks with ease is a testament to the evolutionary adaptations that have made them so successful in their arboreal habitats."
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 132.00
+    width: 28.00
+    height: 1.00
+  text: "Food Hoarders Extraordinaire"
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 133.00
+    width: 404.00
+    height: 1.00
+  text: "Squirrels are often seen frantically gathering nuts, seeds, and even fungi in preparation for winter. While this behavior may seem like instinctual hoarding, it is actually a survival strategy that has been honed over millions of years. Known as \"scatter hoarding,\" squirrels store their food in a variety of hidden locations, often burying it deep in the soil or stashing it in hollowed-out tree trunks."
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 134.00
+    width: 467.00
+    height: 1.00
+  text: "Interestingly, squirrels have an incredible memory for the locations of their caches. Research has shown that they can remember thousands of hiding spots, often returning to them months later when food is scarce. However, they don't always recover every stash some forgotten caches eventually sprout into new trees, contributing to forest regeneration. This unintentional role as forest gardeners highlights the ecological importance of squirrels in their ecosystems."
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 136.00
+    width: 41.00
+    height: 1.00
+  text: "The Great Squirrel Debate: Urban vs. Wild"
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 137.00
+    width: 571.00
+    height: 1.00
+  text: "While squirrels are most commonly associated with rural or wooded areas, their adaptability has allowed them to thrive in urban environments as well. In cities, squirrels have become adept at finding food sources in places like parks, streets, and even garbage cans. However, their urban counterparts face unique challenges, including traffic, predators, and the lack of natural shelters. Despite these obstacles, squirrels in urban areas are often observed using human infrastructure such as buildings, bridges, and power lines as highways for their acrobatic escapades."
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 138.00
+    width: 437.00
+    height: 1.00
+  text: "There is, however, a growing concern regarding the impact of urban life on squirrel populations. Pollution, deforestation, and the loss of natural habitats are making it more difficult for squirrels to find adequate food and shelter. As a result, conservationists are focusing on creating squirrel-friendly spaces within cities, with the goal of ensuring these resourceful creatures continue to thrive in both rural and urban landscapes."
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 140.00
+    width: 22.00
+    height: 1.00
+  text: "A Symbol of Resilience"
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 141.00
+    width: 424.00
+    height: 1.00
+  text: "In many cultures, squirrels are symbols of resourcefulness, adaptability, and preparation. Their ability to thrive in a variety of environments while navigating challenges with agility and grace serves as a reminder of the resilience inherent in nature. Whether you encounter them in a quiet forest, a city park, or your own backyard, squirrels are creatures that never fail to amaze with their endless energy and ingenuity."
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 142.00
+    width: 308.00
+    height: 1.00
+  text: "In the end, squirrels may be small, but they are mighty in their ability to survive and thrive in a world that is constantly changing. So next time you spot one hopping across a branch or darting across your lawn, take a moment to appreciate the remarkable acrobat at work a true marvel of the natural world."
+  text_color:
+    r: 255
+    g: 255
+    b: 255
+    a: 255
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: scissor_end
+  note: end of scissor
