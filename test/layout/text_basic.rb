@@ -26,7 +26,7 @@ class TestTextBasic < MTest::Unit::TestCase
     ) do
       Clay.text(
         "Hello, world!",
-        color: Clay::Colors.yellow.to_h,
+        text_color: Clay::Colors.yellow.to_h,
         text_alignment: :center
       )
     end
@@ -44,7 +44,7 @@ class TestTextBasic < MTest::Unit::TestCase
         "type" => :text,
         "bounding_box" => { "x" => 3.5, "y" => 1.0, "width" => 13.0, "height" => 1.0 },
         "text" => "Hello, world!",
-        "color" => { "r" => 255.0, "g" => 255.0, "b" => 0.0, "a" => 255.0 },
+        "text_color" => { "r" => 255.0, "g" => 255.0, "b" => 0.0, "a" => 255.0 },
         "background_color" => { "r" => 0.0, "g" => 0.0, "b" => 0.0, "a" => 0.0 }
       }
     ], commands)

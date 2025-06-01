@@ -164,7 +164,7 @@ mrb_value mrb_clay_text_render_data(mrb_state* mrb, Clay_TextRenderData textData
   mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "bounding_box"), mrb_clay_bounding_box(mrb, bbox));
   mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "text"),
                mrb_str_new(mrb, textData.stringContents.chars, textData.stringContents.length));
-  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "color"), mrb_clay_color(mrb, textData.textColor));
+  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "text_color"), mrb_clay_color(mrb, textData.textColor));
   mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "background_color"), mrb_clay_color(mrb, textData.backgroundColor));
   return result;
 }
@@ -183,14 +183,14 @@ mrb_value mrb_clay_border_render_data(mrb_state* mrb, Clay_BorderRenderData bord
 
 mrb_value mrb_clay_clip_start_render_data(mrb_state* mrb, Clay_BoundingBox bbox) {
   mrb_value result = mrb_hash_new_capa(mrb, 2);
-  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "type"), mrb_symbol_value(mrb_intern_lit(mrb, "clip_start")));
+  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "type"), mrb_symbol_value(mrb_intern_lit(mrb, "scissor_start")));
   mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "bounding_box"), mrb_clay_bounding_box(mrb, bbox));
   return result;
 }
 
 mrb_value mrb_clay_clip_end_render_data(mrb_state* mrb, Clay_BoundingBox bbox) {
   mrb_value result = mrb_hash_new_capa(mrb, 2);
-  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "type"), mrb_symbol_value(mrb_intern_lit(mrb, "clip_end")));
+  mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "type"), mrb_symbol_value(mrb_intern_lit(mrb, "scissor_end")));
   mrb_hash_set(mrb, result, mrb_str_new_lit(mrb, "bounding_box"), mrb_clay_bounding_box(mrb, bbox));
   return result;
 }
@@ -220,6 +220,7 @@ mrb_value mrb_clay_end_layout(mrb_state* mrb, mrb_value self) {
       }
       case CLAY_RENDER_COMMAND_TYPE_SCISSOR_START: {
         mrb_ary_set(mrb, commands, i, mrb_clay_clip_start_render_data(mrb, renderCommand->boundingBox));
+        break;
       }
       case CLAY_RENDER_COMMAND_TYPE_SCISSOR_END: {
         mrb_ary_set(mrb, commands, i, mrb_clay_clip_end_render_data(mrb, renderCommand->boundingBox));

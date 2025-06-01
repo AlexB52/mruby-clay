@@ -25,7 +25,7 @@ class TestTextAlignment < MTest::Unit::TestCase
     ) do
       Clay.text(
         "Lorem ipsum dolor it amet, consectetur adipisicing elit, sed",
-        color: Clay::Colors.yellow.to_h,
+        text_color: Clay::Colors.yellow.to_h,
         background_color: Clay::Colors.yellow.to_h,
         text_alignment: :center,
       )
@@ -45,31 +45,31 @@ class TestTextAlignment < MTest::Unit::TestCase
         "type" => :text,
         "bounding_box" => {"x" => 1.5, "y" => 1.0, "width" => 17.0, "height" => 1.0},
         "text" => "Lorem ipsum dolor",
-        "color" => yellow_config,
+        "text_color" => yellow_config,
         "background_color" => yellow_config
       }, {
         "type" => :text,
         "bounding_box" => {"x" => 6.0, "y" => 2.0, "width" => 8.0, "height" => 1.0},
         "text" => "it amet,",
-        "color" => yellow_config,
+        "text_color" => yellow_config,
         "background_color" => yellow_config
       }, {
         "type" => :text,
         "bounding_box" => {"x" => 4.5, "y" => 3.0, "width" => 11.0, "height" => 1.0},
         "text" => "consectetur",
-        "color" => yellow_config,
+        "text_color" => yellow_config,
         "background_color" => yellow_config
       }, {
         "type" => :text,
         "bounding_box" => {"x" => 1.5, "y" => 4.0, "width" => 17.0, "height" => 1.0},
         "text" => "adipisicing elit,",
-        "color" => yellow_config,
+        "text_color" => yellow_config,
         "background_color" => yellow_config
       }, {
         "type" => :text,
         "bounding_box" => {"x" => 8.5, "y" => 5.0, "width" => 3.0, "height" => 1.0},
         "text" => "sed",
-        "color" => yellow_config,
+        "text_color" => yellow_config,
         "background_color" => yellow_config
       }
     ], commands)
