@@ -8,8 +8,8 @@ int main() {
   uint64_t totalMemorySize = Clay_MinMemorySize();
   Clay_Arena arena = Clay_CreateArenaWithCapacityAndMemory(totalMemorySize, malloc(totalMemorySize));
 
-  float screenWidth = 10000.0f;
-  float screenHeight = 10000.0f;
+  float screenWidth = 500.0f;
+  float screenHeight = 500.0f;
 
   Clay_Initialize(arena, (Clay_Dimensions){screenWidth, screenHeight}, (Clay_ErrorHandler){HandleClayErrors});
 
@@ -18,7 +18,7 @@ int main() {
   ClayVideoDemo_Data data = ClayVideoDemo_Initialize();
 
   // Run once per frame
-  Clay_SetLayoutDimensions((Clay_Dimensions){.width = 10000.0f, .height = 10000.0f});
+  Clay_SetLayoutDimensions((Clay_Dimensions){.width = 500.0f, .height = 500.0f});
 
   Clay_SetPointerState((Clay_Vector2){0, 0}, false);
   Clay_UpdateScrollContainers(true, (Clay_Vector2){0, 0}, 0.8f);

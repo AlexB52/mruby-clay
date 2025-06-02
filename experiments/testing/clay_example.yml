@@ -3,8 +3,8 @@
   bounding_box:
     x: 0.00
     y: 0.00
-    width: 10000.00
-    height: 10000.00
+    width: 500.00
+    height: 500.00
   background_color:
     r: 43.0
     g: 41.0
@@ -19,7 +19,7 @@
   bounding_box:
     x: 16.00
     y: 16.00
-    width: 9968.00
+    width: 468.00
     height: 60.00
   background_color:
     r: 90.0
@@ -97,7 +97,7 @@
   line_height: 0
 - type: rectangle
   bounding_box:
-    x: 9822.00
+    x: 322.00
     y: 37.50
     width: 38.00
     height: 17.00
@@ -113,7 +113,7 @@
     bottom_right: 5.00
 - type: text
   bounding_box:
-    x: 9838.00
+    x: 338.00
     y: 45.50
     width: 6.00
     height: 1.00
@@ -129,7 +129,7 @@
   line_height: 0
 - type: rectangle
   bounding_box:
-    x: 9876.00
+    x: 376.00
     y: 37.50
     width: 37.00
     height: 17.00
@@ -145,7 +145,7 @@
     bottom_right: 5.00
 - type: text
   bounding_box:
-    x: 9892.00
+    x: 392.00
     y: 45.50
     width: 5.00
     height: 1.00
@@ -161,7 +161,7 @@
   line_height: 0
 - type: rectangle
   bounding_box:
-    x: 9929.00
+    x: 429.00
     y: 37.50
     width: 39.00
     height: 17.00
@@ -177,7 +177,7 @@
     bottom_right: 5.00
 - type: text
   bounding_box:
-    x: 9945.00
+    x: 445.00
     y: 45.50
     width: 7.00
     height: 1.00
@@ -196,7 +196,7 @@
     x: 16.00
     y: 92.00
     width: 250.00
-    height: 9892.00
+    height: 392.00
   background_color:
     r: 90.0
     g: 90.0
@@ -307,14 +307,14 @@
   bounding_box:
     x: 282.00
     y: 92.00
-    width: 9702.00
-    height: 9892.00
+    width: 202.00
+    height: 392.00
 - type: rectangle
   bounding_box:
     x: 282.00
     y: 92.00
-    width: 9702.00
-    height: 9892.00
+    width: 202.00
+    height: 392.00
   background_color:
     r: 90.0
     g: 90.0
@@ -361,9 +361,25 @@
   bounding_box:
     x: 298.00
     y: 126.00
-    width: 527.00
+    width: 169.00
     height: 1.00
-  text: "Squirrels are often overlooked creatures, dismissed as mere park inhabitants or backyard nuisances. Yet, beneath their fluffy tails and twitching noses lies an intricate world of cunning, agility, and survival tactics that are nothing short of fascinating. As one of the most common mammals in North America, squirrels have adapted to a wide range of environments from bustling urban centers to tranquil forests and have developed a variety of unique behaviors that continue to intrigue scientists and nature enthusiasts alike."
+  text: "Squirrels are often overlooked creatures, dismissed as mere park inhabitants or backyard nuisances. Yet, beneath their fluffy tails and twitching noses lies an intricate"
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 127.00
+    width: 166.00
+    height: 1.00
+  text: "world of cunning, agility, and survival tactics that are nothing short of fascinating. As one of the most common mammals in North America, squirrels have adapted to a"
   text_color:
     r: 255.0
     g: 255.0
@@ -377,6 +393,38 @@
   bounding_box:
     x: 298.00
     y: 128.00
+    width: 164.00
+    height: 1.00
+  text: "wide range of environments from bustling urban centers to tranquil forests and have developed a variety of unique behaviors that continue to intrigue scientists and"
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 129.00
+    width: 25.00
+    height: 1.00
+  text: "nature enthusiasts alike."
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 131.00
     width: 20.00
     height: 1.00
   text: "Master Tree Climbers"
@@ -392,39 +440,103 @@
 - type: text
   bounding_box:
     x: 298.00
-    y: 129.00
-    width: 506.00
-    height: 1.00
-  text: "At the heart of a squirrel's skill set is its impressive ability to navigate trees with ease. Whether they're darting from branch to branch or leaping across wide gaps, squirrels possess an innate talent for acrobatics. Their powerful hind legs, which are longer than their front legs, give them remarkable jumping power. With a tail that acts as a counterbalance, squirrels can leap distances of up to ten times the length of their body, making them some of the best aerial acrobats in the animal kingdom."
-  text_color:
-    r: 255.0
-    g: 255.0
-    b: 255.0
-    a: 255.0
-  font_id: 0
-  font_size: 24
-  letter_spacing: 0
-  line_height: 0
-- type: text
-  bounding_box:
-    x: 298.00
-    y: 130.00
-    width: 399.00
-    height: 1.00
-  text: "But it's not just their agility that makes them exceptional climbers. Squirrels' sharp, curved claws allow them to grip tree bark with precision, while the soft pads on their feet provide traction on slippery surfaces. Their ability to run at high speeds and scale vertical trunks with ease is a testament to the evolutionary adaptations that have made them so successful in their arboreal habitats."
-  text_color:
-    r: 255.0
-    g: 255.0
-    b: 255.0
-    a: 255.0
-  font_id: 0
-  font_size: 24
-  letter_spacing: 0
-  line_height: 0
-- type: text
-  bounding_box:
-    x: 298.00
     y: 132.00
+    width: 168.00
+    height: 1.00
+  text: "At the heart of a squirrel's skill set is its impressive ability to navigate trees with ease. Whether they're darting from branch to branch or leaping across wide gaps,"
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 133.00
+    width: 169.00
+    height: 1.00
+  text: "squirrels possess an innate talent for acrobatics. Their powerful hind legs, which are longer than their front legs, give them remarkable jumping power. With a tail that"
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 134.00
+    width: 167.00
+    height: 1.00
+  text: "acts as a counterbalance, squirrels can leap distances of up to ten times the length of their body, making them some of the best aerial acrobats in the animal kingdom."
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 135.00
+    width: 168.00
+    height: 1.00
+  text: "But it's not just their agility that makes them exceptional climbers. Squirrels' sharp, curved claws allow them to grip tree bark with precision, while the soft pads on"
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 136.00
+    width: 168.00
+    height: 1.00
+  text: "their feet provide traction on slippery surfaces. Their ability to run at high speeds and scale vertical trunks with ease is a testament to the evolutionary adaptations"
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 137.00
+    width: 61.00
+    height: 1.00
+  text: "that have made them so successful in their arboreal habitats."
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 139.00
     width: 28.00
     height: 1.00
   text: "Food Hoarders Extraordinaire"
@@ -440,10 +552,10 @@
 - type: text
   bounding_box:
     x: 298.00
-    y: 133.00
-    width: 404.00
+    y: 140.00
+    width: 163.00
     height: 1.00
-  text: "Squirrels are often seen frantically gathering nuts, seeds, and even fungi in preparation for winter. While this behavior may seem like instinctual hoarding, it is actually a survival strategy that has been honed over millions of years. Known as 'scatter hoarding,' squirrels store their food in a variety of hidden locations, often burying it deep in the soil or stashing it in hollowed-out tree trunks."
+  text: "Squirrels are often seen frantically gathering nuts, seeds, and even fungi in preparation for winter. While this behavior may seem like instinctual hoarding, it is"
   text_color:
     r: 255.0
     g: 255.0
@@ -456,10 +568,10 @@
 - type: text
   bounding_box:
     x: 298.00
-    y: 134.00
-    width: 467.00
+    y: 141.00
+    width: 168.00
     height: 1.00
-  text: "Interestingly, squirrels have an incredible memory for the locations of their caches. Research has shown that they can remember thousands of hiding spots, often returning to them months later when food is scarce. However, they don't always recover every stash some forgotten caches eventually sprout into new trees, contributing to forest regeneration. This unintentional role as forest gardeners highlights the ecological importance of squirrels in their ecosystems."
+  text: "actually a survival strategy that has been honed over millions of years. Known as 'scatter hoarding,' squirrels store their food in a variety of hidden locations, often"
   text_color:
     r: 255.0
     g: 255.0
@@ -472,7 +584,71 @@
 - type: text
   bounding_box:
     x: 298.00
-    y: 136.00
+    y: 142.00
+    width: 71.00
+    height: 1.00
+  text: "burying it deep in the soil or stashing it in hollowed-out tree trunks."
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 143.00
+    width: 160.00
+    height: 1.00
+  text: "Interestingly, squirrels have an incredible memory for the locations of their caches. Research has shown that they can remember thousands of hiding spots, often"
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 144.00
+    width: 167.00
+    height: 1.00
+  text: "returning to them months later when food is scarce. However, they don't always recover every stash some forgotten caches eventually sprout into new trees, contributing"
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 145.00
+    width: 138.00
+    height: 1.00
+  text: "to forest regeneration. This unintentional role as forest gardeners highlights the ecological importance of squirrels in their ecosystems."
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 147.00
     width: 41.00
     height: 1.00
   text: "The Great Squirrel Debate: Urban vs. Wild"
@@ -488,10 +664,10 @@
 - type: text
   bounding_box:
     x: 298.00
-    y: 137.00
-    width: 571.00
+    y: 148.00
+    width: 160.00
     height: 1.00
-  text: "While squirrels are most commonly associated with rural or wooded areas, their adaptability has allowed them to thrive in urban environments as well. In cities, squirrels have become adept at finding food sources in places like parks, streets, and even garbage cans. However, their urban counterparts face unique challenges, including traffic, predators, and the lack of natural shelters. Despite these obstacles, squirrels in urban areas are often observed using human infrastructure such as buildings, bridges, and power lines as highways for their acrobatic escapades."
+  text: "While squirrels are most commonly associated with rural or wooded areas, their adaptability has allowed them to thrive in urban environments as well. In cities,"
   text_color:
     r: 255.0
     g: 255.0
@@ -504,10 +680,10 @@
 - type: text
   bounding_box:
     x: 298.00
-    y: 138.00
-    width: 437.00
+    y: 149.00
+    width: 163.00
     height: 1.00
-  text: "There is, however, a growing concern regarding the impact of urban life on squirrel populations. Pollution, deforestation, and the loss of natural habitats are making it more difficult for squirrels to find adequate food and shelter. As a result, conservationists are focusing on creating squirrel-friendly spaces within cities, with the goal of ensuring these resourceful creatures continue to thrive in both rural and urban landscapes."
+  text: "squirrels have become adept at finding food sources in places like parks, streets, and even garbage cans. However, their urban counterparts face unique challenges,"
   text_color:
     r: 255.0
     g: 255.0
@@ -520,7 +696,87 @@
 - type: text
   bounding_box:
     x: 298.00
-    y: 140.00
+    y: 150.00
+    width: 167.00
+    height: 1.00
+  text: "including traffic, predators, and the lack of natural shelters. Despite these obstacles, squirrels in urban areas are often observed using human infrastructure such as"
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 151.00
+    width: 78.00
+    height: 1.00
+  text: "buildings, bridges, and power lines as highways for their acrobatic escapades."
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 152.00
+    width: 169.00
+    height: 1.00
+  text: "There is, however, a growing concern regarding the impact of urban life on squirrel populations. Pollution, deforestation, and the loss of natural habitats are making it"
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 153.00
+    width: 167.00
+    height: 1.00
+  text: "more difficult for squirrels to find adequate food and shelter. As a result, conservationists are focusing on creating squirrel-friendly spaces within cities, with the"
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 154.00
+    width: 99.00
+    height: 1.00
+  text: "goal of ensuring these resourceful creatures continue to thrive in both rural and urban landscapes."
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 156.00
     width: 22.00
     height: 1.00
   text: "A Symbol of Resilience"
@@ -536,10 +792,10 @@
 - type: text
   bounding_box:
     x: 298.00
-    y: 141.00
-    width: 424.00
+    y: 157.00
+    width: 160.00
     height: 1.00
-  text: "In many cultures, squirrels are symbols of resourcefulness, adaptability, and preparation. Their ability to thrive in a variety of environments while navigating challenges with agility and grace serves as a reminder of the resilience inherent in nature. Whether you encounter them in a quiet forest, a city park, or your own backyard, squirrels are creatures that never fail to amaze with their endless energy and ingenuity."
+  text: "In many cultures, squirrels are symbols of resourcefulness, adaptability, and preparation. Their ability to thrive in a variety of environments while navigating"
   text_color:
     r: 255.0
     g: 255.0
@@ -552,10 +808,58 @@
 - type: text
   bounding_box:
     x: 298.00
-    y: 142.00
-    width: 308.00
+    y: 158.00
+    width: 163.00
     height: 1.00
-  text: "In the end, squirrels may be small, but they are mighty in their ability to survive and thrive in a world that is constantly changing. So next time you spot one hopping across a branch or darting across your lawn, take a moment to appreciate the remarkable acrobat at work a true marvel of the natural world."
+  text: "challenges with agility and grace serves as a reminder of the resilience inherent in nature. Whether you encounter them in a quiet forest, a city park, or your own"
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 159.00
+    width: 99.00
+    height: 1.00
+  text: "backyard, squirrels are creatures that never fail to amaze with their endless energy and ingenuity."
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 160.00
+    width: 168.00
+    height: 1.00
+  text: "In the end, squirrels may be small, but they are mighty in their ability to survive and thrive in a world that is constantly changing. So next time you spot one hopping"
+  text_color:
+    r: 255.0
+    g: 255.0
+    b: 255.0
+    a: 255.0
+  font_id: 0
+  font_size: 24
+  letter_spacing: 0
+  line_height: 0
+- type: text
+  bounding_box:
+    x: 298.00
+    y: 161.00
+    width: 139.00
+    height: 1.00
+  text: "across a branch or darting across your lawn, take a moment to appreciate the remarkable acrobat at work a true marvel of the natural world."
   text_color:
     r: 255.0
     g: 255.0
