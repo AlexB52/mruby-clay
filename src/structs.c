@@ -116,7 +116,7 @@ Clay_ChildAlignment mrb_cast_clay_child_alignment(mrb_state* mrb, mrb_value hash
 Clay_LayoutConfig mrb_cast_clay_layout_config(mrb_state* mrb, mrb_value hash) {
   Clay_LayoutConfig result = {};
 
-  mrb_value child_gap = mrb_get_hash_value(mrb, hash, "childGap");
+  mrb_value child_gap = mrb_get_hash_value(mrb, hash, "child_gap");
   if (mrb_fixnum_p(child_gap)) {
     result.childGap = mrb_fixnum(child_gap);
   }
@@ -172,7 +172,7 @@ Clay_TextElementConfig mrb_cast_clay_text_config(mrb_state* mrb, mrb_value hash)
     }
   }
 
-  mrb_value color = mrb_get_hash_value(mrb, hash, "color");
+  mrb_value color = mrb_get_hash_value(mrb, hash, "text_color");
   if (mrb_hash_p(color)) {
     result.textColor = mrb_cast_clay_color(mrb, color);
   }

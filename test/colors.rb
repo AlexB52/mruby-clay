@@ -38,6 +38,9 @@ class TestColors < MTest::Unit::TestCase
   def test_build
     subject = Clay::Colors.build(r: 20, g: 17, b: 89, a: 36)
     assert_equal({ r: 20, g: 17, b: 89, a: 36 }, subject.to_h)
+
+    subject = Clay::Colors.build(20, 17, 89, 36)
+    assert_equal({ r: 20, g: 17, b: 89, a: 36 }, subject.to_h)
   end
 
   private

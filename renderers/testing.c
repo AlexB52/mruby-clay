@@ -2,16 +2,6 @@
 #include <stdio.h>
 #include "clay.h"  // Adjust path as needed for Clay types
 
-const Clay_Color COLOR_DEFAULT = (Clay_Color){0, 0, 0, 0};
-const Clay_Color COLOR_BLACK = (Clay_Color){0, 0, 0, 255};
-const Clay_Color COLOR_RED = (Clay_Color){255, 0, 0, 255};
-const Clay_Color COLOR_GREEN = (Clay_Color){0, 255, 0, 255};
-const Clay_Color COLOR_YELLOW = (Clay_Color){255, 255, 0, 255};
-const Clay_Color COLOR_BLUE = (Clay_Color){0, 0, 255, 255};
-const Clay_Color COLOR_MAGENTA = (Clay_Color){255, 0, 255, 255};
-const Clay_Color COLOR_CYAN = (Clay_Color){0, 255, 255, 255};
-const Clay_Color COLOR_WHITE = (Clay_Color){255, 255, 255, 255};
-
 void HandleClayErrors(Clay_ErrorData errorData) {
   // See the Clay_ErrorData struct for more information
   printf("%d: %s", errorData.errorType, errorData.errorText.chars);
@@ -36,13 +26,13 @@ void write_color(FILE* file, const char* name, Clay_Color color, int level) {
   write_indent(file, level);
   fprintf(file, "%s:\n", name);
   write_indent(file, level + 1);
-  fprintf(file, "r: %.0f\n", color.r);
+  fprintf(file, "r: %.1f\n", color.r);
   write_indent(file, level + 1);
-  fprintf(file, "g: %.0f\n", color.g);
+  fprintf(file, "g: %.1f\n", color.g);
   write_indent(file, level + 1);
-  fprintf(file, "b: %.0f\n", color.b);
+  fprintf(file, "b: %.1f\n", color.b);
   write_indent(file, level + 1);
-  fprintf(file, "a: %.0f\n", color.a);
+  fprintf(file, "a: %.1f\n", color.a);
 }
 
 void write_corner_radius(FILE* file, Clay_CornerRadius radius, int level) {

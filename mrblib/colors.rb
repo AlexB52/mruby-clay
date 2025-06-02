@@ -37,8 +37,12 @@ module Clay
     def self.cyan   = DEFAULT_COLORS[:cyan]
     def self.black  = DEFAULT_COLORS[:black]
 
-    def self.build(r:, g:, b:, a: 255)
-      Color.new(r,g,b,a)
+    def self.build(*args, r: nil, g: nil, b: nil, a: 255)
+      if args.empty?
+        Color.new(r,g,b,a)
+      else
+        Color.new(*args)
+      end
     end
   end
 end
