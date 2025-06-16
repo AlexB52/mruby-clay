@@ -11,59 +11,59 @@
 #include <mruby/array.h>
 #include <mruby/hash.h>
 #include <mruby/numeric.h>
+#include <mruby/variable.h>
 
 // -- [GLOBALS] --
-
-static mrb_state* CLAY_mrb;
-static mrb_value CLAY_measure_proc;
-static mrb_value CLAY_error_proc;
 
 // -- [HELPERS] --
 
 // -- [INITIALIZATION] --
 
 void HandleClayErrors(Clay_ErrorData errorData) {
-  mrb_value error = mrb_hash_new_capa(CLAY_mrb, 2);
+  mrb_state* mrb = (mrb_state*)errorData.userData;
+  mrb_value error_proc = mrb_gv_get(mrb, mrb_intern_lit(mrb, "$__clay_error_proc"));
+
+  mrb_value error = mrb_hash_new_capa(mrb, 2);
   mrb_sym error_type;
 
   switch (errorData.errorType) {
     case CLAY_ERROR_TYPE_TEXT_MEASUREMENT_FUNCTION_NOT_PROVIDED: {
-      error_type = mrb_intern_lit(CLAY_mrb, "text_measurement_function_not_provided");
+      error_type = mrb_intern_lit(mrb, "text_measurement_function_not_provided");
       break;
     }
     case CLAY_ERROR_TYPE_ARENA_CAPACITY_EXCEEDED: {
-      error_type = mrb_intern_lit(CLAY_mrb, "arena_capacity_exceeded");
+      error_type = mrb_intern_lit(mrb, "arena_capacity_exceeded");
       break;
     }
     case CLAY_ERROR_TYPE_ELEMENTS_CAPACITY_EXCEEDED: {
-      error_type = mrb_intern_lit(CLAY_mrb, "elements_capacity_exceeded");
+      error_type = mrb_intern_lit(mrb, "elements_capacity_exceeded");
       break;
     }
     case CLAY_ERROR_TYPE_TEXT_MEASUREMENT_CAPACITY_EXCEEDED: {
-      error_type = mrb_intern_lit(CLAY_mrb, "text_measurement_capacity_exceeded");
+      error_type = mrb_intern_lit(mrb, "text_measurement_capacity_exceeded");
     } break;
     case CLAY_ERROR_TYPE_DUPLICATE_ID: {
-      error_type = mrb_intern_lit(CLAY_mrb, "duplicate_id");
+      error_type = mrb_intern_lit(mrb, "duplicate_id");
       break;
     }
     case CLAY_ERROR_TYPE_FLOATING_CONTAINER_PARENT_NOT_FOUND: {
-      error_type = mrb_intern_lit(CLAY_mrb, "floating_container_parent_not_found");
+      error_type = mrb_intern_lit(mrb, "floating_container_parent_not_found");
     } break;
     case CLAY_ERROR_TYPE_PERCENTAGE_OVER_1: {
-      error_type = mrb_intern_lit(CLAY_mrb, "percentage_over_1");
+      error_type = mrb_intern_lit(mrb, "percentage_over_1");
       break;
     }
     case CLAY_ERROR_TYPE_INTERNAL_ERROR: {
-      error_type = mrb_intern_lit(CLAY_mrb, "internal_error");
+      error_type = mrb_intern_lit(mrb, "internal_error");
       break;
     }
   }
 
-  mrb_hash_set(CLAY_mrb, error, mrb_str_new_lit(CLAY_mrb, "message"),
-               mrb_str_new(CLAY_mrb, errorData.errorText.chars, errorData.errorText.length));
+  mrb_hash_set(mrb, error, mrb_str_new_lit(mrb, "message"),
+               mrb_str_new(mrb, errorData.errorText.chars, errorData.errorText.length));
 
-  mrb_hash_set(CLAY_mrb, error, mrb_str_new_lit(CLAY_mrb, "type"), mrb_symbol_value(error_type));
-  mrb_yield(CLAY_mrb, CLAY_error_proc, error);
+  mrb_hash_set(mrb, error, mrb_str_new_lit(mrb, "type"), mrb_symbol_value(error_type));
+  mrb_yield(mrb, error_proc, error);
 }
 
 mrb_value mrb_clay_initialize(mrb_state* mrb, mrb_value self) {
@@ -73,13 +73,14 @@ mrb_value mrb_clay_initialize(mrb_state* mrb, mrb_value self) {
   mrb_int width, height;
   mrb_value error_blk;
   mrb_get_args(mrb, "ii&", &width, &height, &error_blk);
-  CLAY_mrb = mrb;
-  CLAY_error_proc = error_blk;
+
+  // Store in global Ruby var to protect from GC
+  mrb_gv_set(mrb, mrb_intern_lit(mrb, "$__clay_error_proc"), error_blk);
 
   uint64_t totalMemorySize = Clay_MinMemorySize();
   Clay_Arena arena = Clay_CreateArenaWithCapacityAndMemory(totalMemorySize, malloc(totalMemorySize));
 
-  Clay_Initialize(arena, (Clay_Dimensions){width, height}, (Clay_ErrorHandler){HandleClayErrors});
+  Clay_Initialize(arena, (Clay_Dimensions){width, height}, (Clay_ErrorHandler){HandleClayErrors, (void *)mrb});
   mrb_cstring_arena_init(&bindingArena);
 
   return mrb_nil_value();
@@ -239,42 +240,45 @@ mrb_value mrb_clay_end_layout(mrb_state* mrb, mrb_value self) {
 // -- [MEASURE TEXT] --
 
 static Clay_Dimensions measure_text_callback(Clay_StringSlice text, Clay_TextElementConfig* config, void* user_data) {
-  mrb_value textConfig = mrb_hash_new_capa(CLAY_mrb, 2);
-  mrb_hash_set(CLAY_mrb, textConfig, mrb_symbol_value(mrb_intern_lit(CLAY_mrb, "font_size")),
+  mrb_state* mrb = (mrb_state*)user_data;
+
+  mrb_value textConfig = mrb_hash_new_capa(mrb, 2);
+  mrb_hash_set(mrb, textConfig, mrb_symbol_value(mrb_intern_lit(mrb, "font_size")),
                mrb_fixnum_value(config->fontSize));
-  mrb_hash_set(CLAY_mrb, textConfig, mrb_symbol_value(mrb_intern_lit(CLAY_mrb, "line_height")),
+  mrb_hash_set(mrb, textConfig, mrb_symbol_value(mrb_intern_lit(mrb, "line_height")),
                mrb_fixnum_value(config->lineHeight));
 
   // build Ruby args: [ text_str, config_hash ]
-  mrb_value args = mrb_ary_new_capa(CLAY_mrb, 2);
-  mrb_ary_set(CLAY_mrb, args, 0, mrb_str_new(CLAY_mrb, text.chars, text.length));
-  mrb_ary_set(CLAY_mrb, args, 1, textConfig);
+  mrb_value args = mrb_ary_new_capa(mrb, 2);
+  mrb_ary_set(mrb, args, 0, mrb_str_new(mrb, text.chars, text.length));
+  mrb_ary_set(mrb, args, 1, textConfig);
 
   // returns [width, height]
-  mrb_value ret = mrb_yield(CLAY_mrb, CLAY_measure_proc, args);
+  mrb_value block = mrb_gv_get(mrb, mrb_intern_lit(mrb, "$__clay_measure_proc"));
+  mrb_value ret = mrb_yield(mrb, block, args);
 
   // extract width & height
-  mrb_value width = mrb_ary_ref(CLAY_mrb, ret, 0);
-  mrb_value height = mrb_ary_ref(CLAY_mrb, ret, 1);
+  mrb_value width = mrb_ary_ref(mrb, ret, 0);
+  mrb_value height = mrb_ary_ref(mrb, ret, 1);
 
   // return (Clay_Dimensions){.width = (float)text.length, .height = 1.0f};
 
-  return (Clay_Dimensions){.width = mrb_float(mrb_to_float(CLAY_mrb, width)),
-                           .height = mrb_float(mrb_to_float(CLAY_mrb, height))};
+  return (Clay_Dimensions){.width = mrb_float(mrb_to_float(mrb, width)),
+                           .height = mrb_float(mrb_to_float(mrb, height))};
 }
 
 static mrb_value mrb_clay_set_measure_text(mrb_state* mrb, mrb_value self) {
   mrb_value blk;
   mrb_get_args(mrb, "&", &blk);
-  if (mrb_nil_p(blk)) {
+
+  if (!mrb_proc_p(blk)) {
     mrb_raise(mrb, E_ARGUMENT_ERROR, "Clay.measure_text requires a block");
   }
 
-  // GLOBAL variables used in measure_text_callback
-  CLAY_mrb = mrb;
-  CLAY_measure_proc = blk;
+  // Store in global Ruby var to protect from GC
+  mrb_gv_set(mrb, mrb_intern_lit(mrb, "$__clay_measure_proc"), blk);
 
-  Clay_SetMeasureTextFunction(measure_text_callback, NULL);
+  Clay_SetMeasureTextFunction(measure_text_callback, (void *)mrb);
 
   return mrb_nil_value();
 }

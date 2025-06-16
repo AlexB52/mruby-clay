@@ -184,11 +184,6 @@ Clay_TextElementConfig mrb_cast_clay_text_config(mrb_state* mrb, mrb_value hash)
   return result;
 }
 
-typedef struct {
-  mrb_state* mrb;
-  mrb_value blk;
-} clay_elem_ctx_t;
-
 mrb_value mrb_clay_clay_ui(mrb_state* mrb, mrb_value self) {
   Clay_ElementDeclaration config = {};
 
@@ -226,11 +221,9 @@ mrb_value mrb_clay_clay_ui(mrb_state* mrb, mrb_value self) {
     config.cornerRadius = mrb_cast_clay_corners_config(mrb, corners);
   }
 
-  clay_elem_ctx_t context = {mrb, block};
-
   CLAY(config) {
-    if (!mrb_nil_p(context.blk)) {
-      mrb_yield(context.mrb, context.blk, mrb_nil_value());
+    if (mrb_proc_p(block)) {
+      mrb_yield(mrb, block, mrb_nil_value());
     }
   };
 
