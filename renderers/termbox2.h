@@ -1,5 +1,5 @@
-#include <clay.h>
-#include <termbox2.h>
+#include "../clay/clay.h"
+#include "../termbox2/termbox2.h"
 #include <stdbool.h>
 #include <math.h>
 
@@ -25,7 +25,6 @@ const Clay_Color COLOR_WHITE = (Clay_Color){255, 255, 255, 255};
 
 
 bool IsClipped(int x, int y);
-void HandleClayErrors(Clay_ErrorData errorData);
 uint16_t TBColorFromClayColor(const Clay_Color color);
 Clay_Dimensions MeasureTextTerminal(Clay_StringSlice text, Clay_TextElementConfig* cfg, void* userData);
 void PushClip(Clay_BoundingBox bbox);
@@ -46,10 +45,6 @@ int clay_set_cell(int x, int y, uint32_t ch, uintattr_t fg, uintattr_t bg) {
   return tb_set_cell(x, y, ch, fg, bg);
 }
 
-void HandleClayErrors(Clay_ErrorData errorData) {
-  // See the Clay_ErrorData struct for more information
-  printf("%d: %s", errorData.errorType, errorData.errorText.chars);
-}
 
 uint16_t TBColorFromClayColor(const Clay_Color color) {
   if (color.a == 0) {
