@@ -20,19 +20,23 @@ class TestColors < MTest::Unit::TestCase
   end
 
   def test_black
-    assert_default_colors(Clay::Colors.black, { r: 255, g: 255, b: 255, a: 255 })
+    assert_default_colors(Clay::Colors.black, { r: 0, g: 0, b: 0, a: 255 })
+  end
+
+  def test_white
+    assert_default_colors(Clay::Colors.white, { r: 255, g: 255, b: 255, a: 255 })
   end
 
   def test_to_h
-    assert_equal(Clay::Colors.black.to_h, { r: 255, g: 255, b: 255, a: 255 })
-    assert_equal(Clay::Colors.black.to_h(:sym_keys), { r: 255, g: 255, b: 255, a: 255 })
-    assert_equal(Clay::Colors.black.to_h(:unknown), { r: 255, g: 255, b: 255, a: 255 })
-    assert_equal(Clay::Colors.black.to_h(:string_keys), { "r" => 255, "g" => 255, "b" => 255, "a" => 255 })
+    assert_equal(Clay::Colors.black.to_h, { r: 0, g: 0, b: 0, a: 255 })
+    assert_equal(Clay::Colors.black.to_h(:sym_keys), { r: 0, g: 0, b: 0, a: 255 })
+    assert_equal(Clay::Colors.black.to_h(:unknown), { r: 0, g: 0, b: 0, a: 255 })
+    assert_equal(Clay::Colors.black.to_h(:string_keys), { "r" => 0, "g" => 0, "b" => 0, "a" => 255 })
   end
 
   def test_eql
-    assert_equal Clay::Colors.black, { r: 255, g: 255, b: 255, a: 255 }
-    assert_equal Clay::Colors.black, { "r" => 255, "g" => 255, "b" => 255, "a" => 255 }
+    assert_equal Clay::Colors.black, { r: 0, g: 0, b: 0, a: 255 }
+    assert_equal Clay::Colors.black, { "r" => 0, "g" => 0, "b" => 0, "a" => 255 }
   end
 
   def test_build
