@@ -82,8 +82,8 @@ Clay_SizingAxis mrb_cast_clay_sizing_axis(mrb_state* mrb, mrb_value hash) {
   mrb_value percent = mrb_get_hash_value(mrb, hash, "percent");
   Clay__SizingType type = mrb_fixnum(mrb_get_hash_value(mrb, hash, "type"));
 
-  if (mrb_fixnum_p(percent)) {
-    return (Clay_SizingAxis){.size = {.percent = mrb_fixnum(percent)}, .type = type};
+  if (mrb_float_p(percent)) {
+    return (Clay_SizingAxis){.size = {.percent = mrb_float(percent)}, .type = type};
   } else {
     return (Clay_SizingAxis){.size = {.minMax =
                                           (Clay_SizingMinMax){
