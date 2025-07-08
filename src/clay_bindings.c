@@ -292,14 +292,36 @@ mrb_value mrb_clay_get_element_data(mrb_state* mrb, mrb_value self) {
     return mrb_nil_value();
   }
 
-  Clay_String cid = mrb_cast_clay_string(mrb, id);
-  Clay_ElementData data = Clay_GetElementData(Clay_GetElementId(cid));
+  Clay_ElementData data = Clay_GetElementData(mrb_cast_clay_id(mrb, id));
 
   if (data.found) {
     return mrb_clay_bounding_box(mrb, data.boundingBox);
   } else {
     return mrb_nil_value();
   }
+}
+
+mrb_value mrb_clay_set_pointer_state(mrb_state* mrb, mrb_value self) {
+  mrb_value position;
+  mrb_bool mouse_down;
+  mrb_get_args(mrb, "Hb", &position, &mouse_down);
+
+  Clay_SetPointerState(mrb_cast_clay_vector2(mrb, position), mouse_down);
+  return mrb_nil_value();
+}
+
+mrb_value mrb_clay_pointer_over(mrb_state* mrb, mrb_value self) {
+  mrb_value id;
+  mrb_get_args(mrb, "o", &id);
+
+  if (mrb_symbol_p(id)) {
+    id = mrb_sym2str(mrb, mrb_symbol(id));
+  } else if (!mrb_string_p(id)) {
+    return mrb_false_value();
+  }
+
+  bool result = Clay_PointerOver(mrb_cast_clay_id(mrb, id));
+  return mrb_bool_value(result);
 }
 
 void mrb_mruby_clay_gem_init(mrb_state* mrb) {
@@ -313,6 +335,8 @@ void mrb_mruby_clay_gem_init(mrb_state* mrb) {
   mrb_define_module_function(mrb, module, "ui", mrb_clay_clay_ui, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, module, "text", mrb_clay_clay_text, MRB_ARGS_REQ(2));
   mrb_define_module_function(mrb, module, "get_element_data", mrb_clay_get_element_data, MRB_ARGS_REQ(1));
+  mrb_define_module_function(mrb, module, "set_pointer_state", mrb_clay_set_pointer_state, MRB_ARGS_REQ(2));
+  mrb_define_module_function(mrb, module, "pointer_over", mrb_clay_pointer_over, MRB_ARGS_REQ(1));
 }
 
 void mrb_mruby_clay_gem_final(mrb_state* mrb) { /* nothing to clean up */ }
