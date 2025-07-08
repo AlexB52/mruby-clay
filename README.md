@@ -38,3 +38,9 @@ To run examples after mruby-clay is built successfully
 To remove the error message `mirb(19106,0x7ff85a248bc0) malloc: nano zone abandoned due to inability to reserve vm space.`
 
     export MallocNanoZone=0 
+
+## Limitations
+
+Here are some limitations of the mruby-clay bindings
+
+  * Clay_Hovered: Currently Clay.hovered? is not supported inside the ui layout definition but only in the block

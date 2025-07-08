@@ -324,6 +324,10 @@ mrb_value mrb_clay_pointer_over(mrb_state* mrb, mrb_value self) {
   return mrb_bool_value(result);
 }
 
+mrb_value mrb_clay_hovered(mrb_state* mrb, mrb_value self) {
+  return mrb_bool_value(Clay_Hovered());
+}
+
 void mrb_mruby_clay_gem_init(mrb_state* mrb) {
   struct RClass* module = mrb_define_module(mrb, "Clay");
   mrb_define_module_function(mrb, module, "measure_text", mrb_clay_set_measure_text, MRB_ARGS_BLOCK());
@@ -333,10 +337,11 @@ void mrb_mruby_clay_gem_init(mrb_state* mrb) {
   mrb_define_module_function(mrb, module, "set_layout_dimensions", mrb_clay_set_layout_dimensions, MRB_ARGS_REQ(2));
   mrb_define_module_function(mrb, module, "init", mrb_clay_initialize, MRB_ARGS_REQ(2));
   mrb_define_module_function(mrb, module, "ui", mrb_clay_clay_ui, MRB_ARGS_REQ(1));
-  mrb_define_module_function(mrb, module, "text", mrb_clay_clay_text, MRB_ARGS_REQ(2));
+  mrb_define_module_function(mrb, module, "text", mrb_clay_clay_text, MRB_ARGS_ARG(1, 1));
   mrb_define_module_function(mrb, module, "get_element_data", mrb_clay_get_element_data, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, module, "set_pointer_state", mrb_clay_set_pointer_state, MRB_ARGS_REQ(2));
   mrb_define_module_function(mrb, module, "pointer_over", mrb_clay_pointer_over, MRB_ARGS_REQ(1));
+  mrb_define_module_function(mrb, module, "hovered?", mrb_clay_hovered, MRB_ARGS_NONE());
 }
 
 void mrb_mruby_clay_gem_final(mrb_state* mrb) { /* nothing to clean up */ }
