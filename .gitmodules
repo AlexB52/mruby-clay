@@ -1,9 +1,12 @@
 [submodule "clay"]
 	path = clay
 	url = https://github.com/nicbarker/clay.git
+	branch = main
 [submodule "mruby"]
 	path = mruby
 	url = https://github.com/mruby/mruby.git
+	branch = master
 [submodule "termbox2"]
 	path = termbox2
 	url = https://github.com/termbox/termbox2.git
+	branch = master
