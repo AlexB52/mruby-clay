@@ -22,10 +22,13 @@ Clay_Color mrb_cast_clay_color(mrb_state* mrb, mrb_value hash) {
   };
 }
 
-Clay_ElementId mrb_cast_clay_id(mrb_state* mrb, mrb_value id) {
+Clay_String mrb_cast_clay_string(mrb_state* mrb, mrb_value id) {
   const char* cid = mrb_str_to_cstr(mrb, id);
-  Clay_String clay_string = {.chars = cid, .length = strlen(cid)};
-  return CLAY_SID(clay_string);
+  return (Clay_String){.chars = cid, .length = strlen(cid)};
+}
+
+Clay_ElementId mrb_cast_clay_id(mrb_state* mrb, mrb_value id) {
+  return CLAY_SID(mrb_cast_clay_string(mrb, id));
 }
 
 Clay_Vector2 mrb_cast_clay_vector2(mrb_state* mrb, mrb_value hash) {
@@ -192,6 +195,9 @@ mrb_value mrb_clay_clay_ui(mrb_state* mrb, mrb_value self) {
   mrb_get_args(mrb, "H|&", &options, &block);
 
   mrb_value id = mrb_get_hash_value(mrb, options, "id");
+  if (mrb_symbol_p(id)) {
+    id = mrb_sym2str(mrb, mrb_symbol(id));
+  }
   if (mrb_string_p(id)) {
     config.id = mrb_cast_clay_id(mrb, id);
   }

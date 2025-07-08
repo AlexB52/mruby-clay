@@ -80,7 +80,7 @@ mrb_value mrb_clay_initialize(mrb_state* mrb, mrb_value self) {
   uint64_t totalMemorySize = Clay_MinMemorySize();
   Clay_Arena arena = Clay_CreateArenaWithCapacityAndMemory(totalMemorySize, malloc(totalMemorySize));
 
-  Clay_Initialize(arena, (Clay_Dimensions){width, height}, (Clay_ErrorHandler){HandleClayErrors, (void *)mrb});
+  Clay_Initialize(arena, (Clay_Dimensions){width, height}, (Clay_ErrorHandler){HandleClayErrors, (void*)mrb});
   mrb_cstring_arena_init(&bindingArena);
 
   return mrb_nil_value();
@@ -243,8 +243,7 @@ static Clay_Dimensions measure_text_callback(Clay_StringSlice text, Clay_TextEle
   mrb_state* mrb = (mrb_state*)user_data;
 
   mrb_value textConfig = mrb_hash_new_capa(mrb, 2);
-  mrb_hash_set(mrb, textConfig, mrb_symbol_value(mrb_intern_lit(mrb, "font_size")),
-               mrb_fixnum_value(config->fontSize));
+  mrb_hash_set(mrb, textConfig, mrb_symbol_value(mrb_intern_lit(mrb, "font_size")), mrb_fixnum_value(config->fontSize));
   mrb_hash_set(mrb, textConfig, mrb_symbol_value(mrb_intern_lit(mrb, "line_height")),
                mrb_fixnum_value(config->lineHeight));
 
@@ -278,9 +277,29 @@ static mrb_value mrb_clay_set_measure_text(mrb_state* mrb, mrb_value self) {
   // Store in global Ruby var to protect from GC
   mrb_gv_set(mrb, mrb_intern_lit(mrb, "$__clay_measure_proc"), blk);
 
-  Clay_SetMeasureTextFunction(measure_text_callback, (void *)mrb);
+  Clay_SetMeasureTextFunction(measure_text_callback, (void*)mrb);
 
   return mrb_nil_value();
+}
+
+mrb_value mrb_clay_get_element_data(mrb_state* mrb, mrb_value self) {
+  mrb_value id;
+  mrb_get_args(mrb, "o", &id);
+
+  if (mrb_symbol_p(id)) {
+    id = mrb_sym2str(mrb, mrb_symbol(id));
+  } else if (!mrb_string_p(id)) {
+    return mrb_nil_value();
+  }
+
+  Clay_String cid = mrb_cast_clay_string(mrb, id);
+  Clay_ElementData data = Clay_GetElementData(Clay_GetElementId(cid));
+
+  if (data.found) {
+    return mrb_clay_bounding_box(mrb, data.boundingBox);
+  } else {
+    return mrb_nil_value();
+  }
 }
 
 void mrb_mruby_clay_gem_init(mrb_state* mrb) {
@@ -293,6 +312,7 @@ void mrb_mruby_clay_gem_init(mrb_state* mrb) {
   mrb_define_module_function(mrb, module, "init", mrb_clay_initialize, MRB_ARGS_REQ(2));
   mrb_define_module_function(mrb, module, "ui", mrb_clay_clay_ui, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, module, "text", mrb_clay_clay_text, MRB_ARGS_REQ(2));
+  mrb_define_module_function(mrb, module, "get_element_data", mrb_clay_get_element_data, MRB_ARGS_REQ(1));
 }
 
 void mrb_mruby_clay_gem_final(mrb_state* mrb) { /* nothing to clean up */ }
