@@ -328,6 +328,78 @@ mrb_value mrb_clay_hovered(mrb_state* mrb, mrb_value self) {
   return mrb_bool_value(Clay_Hovered());
 }
 
+mrb_value mrb_clay_update_scroll_containers(mrb_state* mrb, mrb_value self) {
+  mrb_value delta_scroll;
+  mrb_bool enabled;
+  mrb_float delta_time;
+  mrb_get_args(mrb, "bHf", &enabled, &delta_scroll, &delta_time);
+
+  Clay_UpdateScrollContainers(enabled, mrb_cast_clay_vector2(mrb, delta_scroll), delta_time);
+  return mrb_nil_value();
+}
+
+mrb_value mrb_clay_get_scroll_offset(mrb_state* mrb, mrb_value self) {
+  Clay_Vector2 offset = Clay_GetScrollOffset();
+
+  mrb_value result = mrb_hash_new_capa(mrb, 2);
+  mrb_hash_set(mrb, result, mrb_symbol_value(mrb_intern_lit(mrb, "x")), mrb_fixnum_value(offset.x));
+  mrb_hash_set(mrb, result, mrb_symbol_value(mrb_intern_lit(mrb, "y")), mrb_fixnum_value(offset.y));
+  return result;
+}
+
+mrb_value mrb_clay_open_element(mrb_state* mrb, mrb_value self) {
+  Clay__OpenElement();
+  return mrb_true_value();
+}
+
+mrb_value mrb_clay_close_element(mrb_state* mrb, mrb_value self) {
+  Clay__CloseElement();
+  return mrb_true_value();
+}
+
+mrb_value mrb_clay_configure_open_element(mrb_state* mrb, mrb_value self) {
+  Clay_ElementDeclaration config = {};
+
+  mrb_value options = mrb_hash_new(mrb);
+  mrb_get_args(mrb, "H", &options);
+
+  mrb_value id = mrb_get_hash_value(mrb, options, "id");
+  if (mrb_symbol_p(id)) {
+    id = mrb_sym2str(mrb, mrb_symbol(id));
+  }
+  if (mrb_string_p(id)) {
+    config.id = mrb_cast_clay_id(mrb, id);
+  }
+
+  mrb_value bg_color = mrb_get_hash_value(mrb, options, "background_color");
+  if (mrb_hash_p(bg_color)) {
+    config.backgroundColor = mrb_cast_clay_color(mrb, bg_color);
+  }
+
+  mrb_value layout = mrb_get_hash_value(mrb, options, "layout");
+  if (mrb_hash_p(layout)) {
+    config.layout = mrb_cast_clay_layout_config(mrb, layout);
+  }
+
+  mrb_value border = mrb_get_hash_value(mrb, options, "border");
+  if (mrb_hash_p(border)) {
+    config.border = mrb_cast_clay_border_config(mrb, border);
+  }
+
+  mrb_value clip = mrb_get_hash_value(mrb, options, "clip");
+  if (mrb_hash_p(clip)) {
+    config.clip = mrb_cast_clay_clip_element_config(mrb, clip);
+  }
+
+  mrb_value corners = mrb_get_hash_value(mrb, options, "corner_radius");
+  if (mrb_hash_p(corners)) {
+    config.cornerRadius = mrb_cast_clay_corners_config(mrb, corners);
+  }
+
+  Clay__ConfigureOpenElement(config);
+  return mrb_true_value();
+}
+
 void mrb_mruby_clay_gem_init(mrb_state* mrb) {
   struct RClass* module = mrb_define_module(mrb, "Clay");
   mrb_define_module_function(mrb, module, "measure_text", mrb_clay_set_measure_text, MRB_ARGS_BLOCK());
@@ -336,12 +408,17 @@ void mrb_mruby_clay_gem_init(mrb_state* mrb) {
   mrb_define_module_function(mrb, module, "min_memory_size", mrb_clay_min_memory_size, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, module, "set_layout_dimensions", mrb_clay_set_layout_dimensions, MRB_ARGS_REQ(2));
   mrb_define_module_function(mrb, module, "init", mrb_clay_initialize, MRB_ARGS_REQ(2));
-  mrb_define_module_function(mrb, module, "ui", mrb_clay_clay_ui, MRB_ARGS_REQ(1));
+  mrb_define_module_function(mrb, module, "open_element", mrb_clay_open_element, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, module, "close_element", mrb_clay_close_element, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, module, "configure_open_element", mrb_clay_configure_open_element, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, module, "text", mrb_clay_clay_text, MRB_ARGS_ARG(1, 1));
   mrb_define_module_function(mrb, module, "get_element_data", mrb_clay_get_element_data, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, module, "set_pointer_state", mrb_clay_set_pointer_state, MRB_ARGS_REQ(2));
   mrb_define_module_function(mrb, module, "pointer_over", mrb_clay_pointer_over, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, module, "hovered?", mrb_clay_hovered, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, module, "get_scroll_offset", mrb_clay_get_scroll_offset, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, module, "update_scroll_containers", mrb_clay_update_scroll_containers,
+                             MRB_ARGS_REQ(3));
 }
 
 void mrb_mruby_clay_gem_final(mrb_state* mrb) { /* nothing to clean up */ }

@@ -187,55 +187,6 @@ Clay_TextElementConfig mrb_cast_clay_text_config(mrb_state* mrb, mrb_value hash)
   return result;
 }
 
-mrb_value mrb_clay_clay_ui(mrb_state* mrb, mrb_value self) {
-  Clay_ElementDeclaration config = {};
-
-  mrb_value block = mrb_nil_value();
-  mrb_value options = mrb_hash_new(mrb);
-  mrb_get_args(mrb, "H|&", &options, &block);
-
-  mrb_value id = mrb_get_hash_value(mrb, options, "id");
-  if (mrb_symbol_p(id)) {
-    id = mrb_sym2str(mrb, mrb_symbol(id));
-  }
-  if (mrb_string_p(id)) {
-    config.id = mrb_cast_clay_id(mrb, id);
-  }
-
-  mrb_value bg_color = mrb_get_hash_value(mrb, options, "background_color");
-  if (mrb_hash_p(bg_color)) {
-    config.backgroundColor = mrb_cast_clay_color(mrb, bg_color);
-  }
-
-  mrb_value layout = mrb_get_hash_value(mrb, options, "layout");
-  if (mrb_hash_p(layout)) {
-    config.layout = mrb_cast_clay_layout_config(mrb, layout);
-  }
-
-  mrb_value border = mrb_get_hash_value(mrb, options, "border");
-  if (mrb_hash_p(border)) {
-    config.border = mrb_cast_clay_border_config(mrb, border);
-  }
-
-  mrb_value clip = mrb_get_hash_value(mrb, options, "clip");
-  if (mrb_hash_p(clip)) {
-    config.clip = mrb_cast_clay_clip_element_config(mrb, clip);
-  }
-
-  mrb_value corners = mrb_get_hash_value(mrb, options, "corner_radius");
-  if (mrb_hash_p(corners)) {
-    config.cornerRadius = mrb_cast_clay_corners_config(mrb, corners);
-  }
-
-  CLAY(config) {
-    if (mrb_proc_p(block)) {
-      mrb_yield(mrb, block, mrb_nil_value());
-    }
-  };
-
-  return mrb_nil_value();
-}
-
 mrb_value mrb_clay_clay_text(mrb_state* mrb, mrb_value self) {
   const char* cstr;
   mrb_int len;
