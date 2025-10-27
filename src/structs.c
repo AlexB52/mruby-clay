@@ -158,7 +158,6 @@ Clay_LayoutConfig mrb_cast_clay_layout_config(mrb_state* mrb, mrb_value hash) {
 }
 
 Clay_CornerRadius mrb_cast_clay_corners_config(mrb_state* mrb, mrb_value hash) {
-  Clay_CornerRadius result = {0};
   return (Clay_CornerRadius){
       .topLeft = mrb_fixnum(mrb_get_hash_value(mrb, hash, "top_left")),
       .topRight = mrb_fixnum(mrb_get_hash_value(mrb, hash, "top_right")),

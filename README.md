@@ -14,6 +14,13 @@ To setup the repository locally:
   bin/build clean all
 ```
 
+## Dependencies
+
+* clay: 0.14
+* 
+
+Note: we have an extra commit on the Clay repository to add background colors to borders and text. Apply it with `git apply background-color-patch.txt`
+
 ## Build
 
 Building mruby with mruby clay. The command is a wrapper of the Rake tasks located in mrucy folder.

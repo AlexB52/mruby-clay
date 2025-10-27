@@ -1,0 +1,58 @@
+commit 62695b6e9dcf5b70b6783b82f447ae3bfdd84fb4
+Author: Alexandre Barret <barret.alx@gmail.com>
+Date:   Sat May 10 16:57:34 2025 +1200
+
+    [TERMBOX2] Add backgroundColor to TEXT and BORDER
+
+diff --git a/clay.h b/clay.h
+index 24d5501..634c9cc 100644
+--- a/clay.h
++++ b/clay.h
+@@ -377,6 +377,7 @@ typedef struct Clay_TextElementConfig {
+     void *userData;
+     // The RGBA color of the font to render, conventionally specified as 0-255.
+     Clay_Color textColor;
++    Clay_Color backgroundColor;
+     // An integer transparently passed to Clay_MeasureText to identify the font to use.
+     // The debug view will pass fontId = 0 for its internal text.
+     uint16_t fontId;
+@@ -545,6 +546,7 @@ typedef struct Clay_BorderWidth {
+ // Controls settings related to element borders.
+ typedef struct Clay_BorderElementConfig {
+     Clay_Color color; // Controls the color of all borders with width > 0. Conventionally represented as 0-255, but interpretation is up to the renderer.
++    Clay_Color backgroundColor;
+     Clay_BorderWidth width; // Controls the widths of individual borders. At least one of these should be > 0 for a BORDER render command to be generated.
+ } Clay_BorderElementConfig;
+ 
+@@ -559,6 +561,7 @@ typedef struct Clay_TextRenderData {
+     Clay_StringSlice stringContents;
+     // Conventionally represented as 0-255 for each channel, but interpretation is up to the renderer.
+     Clay_Color textColor;
++    Clay_Color backgroundColor;
+     // An integer representing the font to use to render this text, transparently passed through from the text declaration.
+     uint16_t fontId;
+     uint16_t fontSize;
+@@ -613,6 +616,7 @@ typedef struct Clay_BorderRenderData {
+     // Controls a shared color for all this element's borders.
+     // Conventionally represented as 0-255 for each channel, but interpretation is up to the renderer.
+     Clay_Color color;
++    Clay_Color backgroundColor;
+     // Specifies the "radius", or corner rounding of this border element.
+     // The rounding is determined by drawing a circle inset into the element corner by (radius, radius) pixels.
+     Clay_CornerRadius cornerRadius;
+@@ -2858,6 +2862,7 @@ void Clay__CalculateFinalLayout(void) {
+                                     .renderData = { .text = {
+                                         .stringContents = CLAY__INIT(Clay_StringSlice) { .length = wrappedLine->line.length, .chars = wrappedLine->line.chars, .baseChars = currentElement->childrenOrTextContent.textElementData->text.chars },
+                                         .textColor = textElementConfig->textColor,
++                                        .backgroundColor = textElementConfig->backgroundColor,
+                                         .fontId = textElementConfig->fontId,
+                                         .fontSize = textElementConfig->fontSize,
+                                         .letterSpacing = textElementConfig->letterSpacing,
+@@ -2984,6 +2989,7 @@ void Clay__CalculateFinalLayout(void) {
+                                 .boundingBox = currentElementBoundingBox,
+                                 .renderData = { .border = {
+                                     .color = borderConfig->color,
++                                    .backgroundColor = borderConfig->backgroundColor,
+                                     .cornerRadius = sharedConfig->cornerRadius,
+                                     .width = borderConfig->width
+                                 }},
