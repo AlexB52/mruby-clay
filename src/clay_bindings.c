@@ -352,6 +352,22 @@ mrb_value mrb_clay_open_element(mrb_state* mrb, mrb_value self) {
   return mrb_true_value();
 }
 
+mrb_value mrb_clay_open_element_with_id(mrb_state* mrb, mrb_value self) {
+  mrb_value id;
+  mrb_get_args(mrb, "o", &id);
+
+  if (mrb_symbol_p(id)) {
+    id = mrb_sym2str(mrb, mrb_symbol(id));
+  }
+
+  if (!mrb_string_p(id)) {
+    mrb_raise(mrb, E_ARGUMENT_ERROR, "id is invalid and should be a string or a symbol");
+  }
+
+  Clay__OpenElementWithId(mrb_cast_clay_id(mrb, id));
+  return mrb_true_value();
+}
+
 mrb_value mrb_clay_close_element(mrb_state* mrb, mrb_value self) {
   Clay__CloseElement();
   return mrb_true_value();
@@ -366,9 +382,6 @@ mrb_value mrb_clay_configure_open_element(mrb_state* mrb, mrb_value self) {
   mrb_value id = mrb_get_hash_value(mrb, options, "id");
   if (mrb_symbol_p(id)) {
     id = mrb_sym2str(mrb, mrb_symbol(id));
-  }
-  if (mrb_string_p(id)) {
-    config.id = mrb_cast_clay_id(mrb, id);
   }
 
   mrb_value bg_color = mrb_get_hash_value(mrb, options, "background_color");
@@ -409,6 +422,7 @@ void mrb_mruby_clay_gem_init(mrb_state* mrb) {
   mrb_define_module_function(mrb, module, "set_layout_dimensions", mrb_clay_set_layout_dimensions, MRB_ARGS_REQ(2));
   mrb_define_module_function(mrb, module, "init", mrb_clay_initialize, MRB_ARGS_REQ(2));
   mrb_define_module_function(mrb, module, "open_element", mrb_clay_open_element, MRB_ARGS_NONE());
+  mrb_define_module_function(mrb, module, "open_element_with_id", mrb_clay_open_element_with_id, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, module, "close_element", mrb_clay_close_element, MRB_ARGS_NONE());
   mrb_define_module_function(mrb, module, "configure_open_element", mrb_clay_configure_open_element, MRB_ARGS_REQ(1));
   mrb_define_module_function(mrb, module, "text", mrb_clay_clay_text, MRB_ARGS_ARG(1, 1));

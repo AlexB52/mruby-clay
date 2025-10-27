@@ -29,8 +29,7 @@ class TestPointerOver < MTest::Unit::TestCase
 
       Clay.begin_layout
 
-      Clay.ui(
-        id: :root,
+      Clay.ui('root',
         background_color: Clay::Colors.red.to_h,
         corner_radius: { top_left: 10, top_right: 10, bottom_left: 10, bottom_right: 10 },
         layout: {

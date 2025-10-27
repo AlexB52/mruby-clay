@@ -10,8 +10,7 @@ Clay.set_layout_dimensions(60, 40)
 
 Clay.begin_layout
 
-Clay.ui(
-  id: "root",
+Clay.ui("root",
   background_color: Clay::Colors.red.to_h,
   layout: {
     padding: {top: 1, right: 1, bottom: 1, left: 1},
@@ -22,8 +21,7 @@ Clay.ui(
     }
   }
 ) do
-  Clay.ui(
-    id: "first",
+  Clay.ui("first",
     background_color: Clay::Colors.green.to_h,
     border: {
       background_color: Clay::Colors.green.to_h,
@@ -43,8 +41,7 @@ Clay.ui(
     Clay.text("Hello, World22222!", color: Clay::Colors.yellow.to_h)
   end
 
-  Clay.ui(
-    id: "second",
+  Clay.ui("second",
     background_color: Clay::Colors.blue.to_h,
     layout: {
       sizing: {

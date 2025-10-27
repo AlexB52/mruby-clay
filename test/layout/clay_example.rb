@@ -19,8 +19,7 @@ class TestClayExample < MTest::Unit::TestCase
 
     Clay.begin_layout
 
-    Clay.ui(
-      id: "OuterContainer",
+    Clay.ui("OuterContainer",
       background_color: Clay::Colors.build(43, 41, 51, 255).to_h,
       layout: {
         layout_direction: Clay::LayoutDirection[:top_to_bottom],
@@ -29,8 +28,7 @@ class TestClayExample < MTest::Unit::TestCase
         child_gap: 16
       }
     ) do
-      Clay.ui(
-        id: "HeaderBar",
+      Clay.ui("HeaderBar",
         background_color: COLOR_90.to_h,
         corner_radius: Clay::Corners[8],
         layout: {
@@ -47,9 +45,8 @@ class TestClayExample < MTest::Unit::TestCase
         render_header_button("Media")
         render_header_button("Support")
       end
-      Clay.ui(id: "LowerContent", layout: { sizing: LAYOUT_EXPAND, child_gap: 16 }) do
-        Clay.ui(
-          id: "sidebar",
+      Clay.ui("LowerContent", layout: { sizing: LAYOUT_EXPAND, child_gap: 16 }) do
+        Clay.ui("sidebar",
           background_color: COLOR_90.to_h,
           layout: {
             layout_direction: Clay::LayoutDirection[:top_to_bottom],
@@ -76,8 +73,7 @@ class TestClayExample < MTest::Unit::TestCase
           end
         end
 
-        Clay.ui(
-          id: "MainContent",
+        Clay.ui("MainContent",
           background_color: COLOR_90.to_h,
           clip: { vertical: true, child_offset: { x: 0, y: 0 }},
           layout: {

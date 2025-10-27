@@ -13,8 +13,7 @@ class TestNestedLayout < MTest::Unit::TestCase
     Clay.begin_layout
 
     # The parent node is restricted to 20 x 20 in a 60 x 40 window
-    Clay.ui(
-      id: "parent",
+    Clay.ui("parent",
       background_color: Clay::Colors.green.to_h,
       layout: {
         padding: Clay::Padding[1],
@@ -24,8 +23,7 @@ class TestNestedLayout < MTest::Unit::TestCase
         }
       }
     ) do
-      Clay.ui(
-        id: "child1",
+      Clay.ui("child1",
         background_color: Clay::Colors.red.to_h,
         layout: {
           sizing: {
@@ -34,8 +32,7 @@ class TestNestedLayout < MTest::Unit::TestCase
           }
         }
       )
-      Clay.ui(
-        id: "child2",
+      Clay.ui("child2",
         background_color: Clay::Colors.blue.to_h,
         layout: {
           sizing: {

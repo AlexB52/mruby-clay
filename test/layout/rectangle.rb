@@ -12,8 +12,7 @@ class TestRectangle < MTest::Unit::TestCase
 
     Clay.begin_layout
 
-    Clay.ui(
-      id: "root",
+    Clay.ui("root",
       background_color: Clay::Colors.red.to_h,
       border: {
         color: Clay::Colors.red.to_h,
