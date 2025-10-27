@@ -31,9 +31,20 @@ Clay_ElementId mrb_cast_clay_id(mrb_state* mrb, mrb_value id) {
   return CLAY_SID(mrb_cast_clay_string(mrb, id));
 }
 
+static mrb_float get_number_as_float(mrb_state* mrb, mrb_value val) {
+  if (mrb_float_p(val)) {
+    return mrb_float(val);
+  } else if (mrb_fixnum_p(val)) {
+    return (mrb_float)mrb_fixnum(val);
+  } else {
+    mrb_raise(mrb, E_TYPE_ERROR, "expected Float or Integer");
+    return 0;  // never reached
+  }
+}
+
 Clay_Vector2 mrb_cast_clay_vector2(mrb_state* mrb, mrb_value hash) {
-  return (Clay_Vector2){.x = mrb_fixnum(mrb_get_hash_value(mrb, hash, "x")),
-                        .y = mrb_fixnum(mrb_get_hash_value(mrb, hash, "y"))};
+  return (Clay_Vector2){.x = get_number_as_float(mrb, mrb_get_hash_value(mrb, hash, "x")),
+                        .y = get_number_as_float(mrb, mrb_get_hash_value(mrb, hash, "y"))};
 }
 
 Clay_ClipElementConfig mrb_cast_clay_clip_element_config(mrb_state* mrb, mrb_value hash) {
