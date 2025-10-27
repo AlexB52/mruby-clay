@@ -10,8 +10,7 @@ Clay.set_layout_dimensions(60, 40)
 
 Clay.begin_layout
 
-Clay.ui(
-  id: "root",
+Clay.ui(:root,
   background_color: { r:255, g:0, b:0, a: 255},
   layout: {
     padding: {
