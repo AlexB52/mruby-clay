@@ -17,7 +17,8 @@ To setup the repository locally:
 ## Dependencies
 
 * clay: 0.14
-* 
+* mruby: master
+* termbox2: master
 
 Note: we have an extra commit on the Clay repository to add background colors to borders and text. Apply it with `git apply background-color-patch.txt`
 
@@ -45,9 +46,3 @@ To run examples after mruby-clay is built successfully
 To remove the error message `mirb(19106,0x7ff85a248bc0) malloc: nano zone abandoned due to inability to reserve vm space.`
 
     export MallocNanoZone=0 
-
-## Limitations
-
-Here are some limitations of the mruby-clay bindings
-
-  * Clay_Hovered: Currently Clay.hovered? is not supported inside the ui layout definition but only in the block
