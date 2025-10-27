@@ -16,7 +16,7 @@ To setup the repository locally:
 
 ## Dependencies
 
-* clay: 0.14
+* clay: master
 * mruby: master
 * termbox2: master
 
