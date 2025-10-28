@@ -7,8 +7,6 @@ MRuby::Build.new do |conf|
   conf.gem github: 'iij/mruby-mtest'
   conf.gem "#{ MRUBY_ROOT }/.."
 
-  # conf.gem "#{ MRUBY_ROOT }/../../mruby-termbox2"
-
   conf.cc.flags << '-g -O0 -fsanitize=address'
   conf.linker.flags << '-fsanitize=address'
 

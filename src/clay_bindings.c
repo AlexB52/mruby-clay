@@ -3,9 +3,6 @@
 #include "helpers.c"
 #include "structs.c"
 
-// #define TB_IMPL
-#include <termbox2.h>
-
 #include <locale.h>
 #include <mruby.h>
 #include <mruby/array.h>
