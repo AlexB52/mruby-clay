@@ -18,11 +18,10 @@ int main() {
 
   // An example of laying out a UI with a fixed width sidebar and flexible
   // width main content
-  CLAY({.id = CLAY_ID("root"),
-        .backgroundColor = COLOR_RED,
-        .layout = {.padding = CLAY_PADDING_ALL(1),
-                   .childAlignment = CLAY_ALIGN_X_CENTER,
-                   .sizing = {.width = CLAY_SIZING_FIXED(20), .height = CLAY_SIZING_FIXED(20)}}}) {
+  CLAY(CLAY_ID("root"), {.backgroundColor = COLOR_RED,
+                         .layout = {.padding = CLAY_PADDING_ALL(1),
+                                    .childAlignment = CLAY_ALIGN_X_CENTER,
+                                    .sizing = {.width = CLAY_SIZING_FIXED(20), .height = CLAY_SIZING_FIXED(20)}}}) {
     CLAY_TEXT(CLAY_STRING("Hello, world!"), CLAY_TEXT_CONFIG({.textColor = COLOR_YELLOW}));
   }
 

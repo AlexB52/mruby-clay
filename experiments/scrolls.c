@@ -63,17 +63,16 @@ int main() {
 
     // An example of laying out a UI with a fixed width sidebar and flexible
     // width main content
-    CLAY({.id = CLAY_ID("root"),
-          .backgroundColor = COLOR_RED,
-          .layout = {.childGap = 1,
-                     .padding = CLAY_PADDING_ALL(1),
-                     .sizing = {
-                         // make the root fill the space given by Clay_Initialize
-                         CLAY_SIZING_GROW(0),  // width
-                         CLAY_SIZING_GROW(0)   // height
-                     }}}) {
-      CLAY({.id = CLAY_ID("FIRST"),
-            .backgroundColor = COLOR_BLACK,
+    CLAY(CLAY_ID("root"), {.backgroundColor = COLOR_RED,
+                           .layout = {.childGap = 1,
+                                      .padding = CLAY_PADDING_ALL(1),
+                                      .sizing = {
+                                          // make the root fill the space given by Clay_Initialize
+                                          CLAY_SIZING_GROW(0),  // width
+                                          CLAY_SIZING_GROW(0)   // height
+                                      }}}) {
+      CLAY(CLAY_ID("FIRST"),
+           {.backgroundColor = COLOR_BLACK,
             .clip = {.vertical = true, .childOffset = Clay_GetScrollOffset()},
             .border = {.width = CLAY_BORDER_ALL(3), .backgroundColor = COLOR_BLACK},
             .layout = {.padding = CLAY_PADDING_ALL(1), .sizing = {CLAY_SIZING_PERCENT(.5f), CLAY_SIZING_FIXED(25)}}}) {
@@ -177,9 +176,8 @@ int main() {
             CLAY_TEXT_CONFIG(
                 {.textColor = COLOR_WHITE, .backgroundColor = COLOR_BLACK, .textAlignment = CLAY_TEXT_ALIGN_CENTER}));
       }
-      CLAY({.id = CLAY_ID("SECOND"),
-            .backgroundColor = COLOR_GREEN,
-            .layout = {.sizing = {CLAY_SIZING_PERCENT(.5f), CLAY_SIZING_GROW(0)}}}) {
+      CLAY(CLAY_ID("SECOND"),
+           {.backgroundColor = COLOR_GREEN, .layout = {.sizing = {CLAY_SIZING_PERCENT(.5f), CLAY_SIZING_GROW(0)}}}) {
         Clay_String text =
             (Clay_String){.isStaticallyAllocated = false, .length = (uint32_t)strlen(rightText), .chars = rightText};
 

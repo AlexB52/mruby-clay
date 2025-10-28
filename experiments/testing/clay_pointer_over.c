@@ -38,9 +38,8 @@ int main() {
 
   Clay_BeginLayout();
 
-  CLAY({.id = CLAY_ID("root"),
-        .backgroundColor = COLOR_RED,
-        .layout = {.sizing = {CLAY_SIZING_FIXED(20), CLAY_SIZING_FIXED(20)}}});
+  CLAY(CLAY_ID("root"),
+       {.backgroundColor = COLOR_RED, .layout = {.sizing = {CLAY_SIZING_FIXED(20), CLAY_SIZING_FIXED(20)}}});
 
   // All clay layouts are declared between Clay_BeginLayout and Clay_EndLayout
   Clay_RenderCommandArray renderCommands = Clay_EndLayout();
@@ -50,9 +49,7 @@ int main() {
 
   Clay_BeginLayout();
 
-  CLAY({.id = root_id,
-        .backgroundColor = COLOR_RED,
-        .layout = {.sizing = {CLAY_SIZING_FIXED(20), CLAY_SIZING_FIXED(20)}}});
+  CLAY(root_id, {.backgroundColor = COLOR_RED, .layout = {.sizing = {CLAY_SIZING_FIXED(20), CLAY_SIZING_FIXED(20)}}});
 
   // All clay layouts are declared between Clay_BeginLayout and Clay_EndLayout
   Clay_EndLayout();

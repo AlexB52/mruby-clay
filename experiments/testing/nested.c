@@ -15,14 +15,14 @@ int main() {
   Clay_SetMeasureTextFunction(MeasureTextTerminal, NULL);
 
   Clay_BeginLayout();
-  CLAY({.id = CLAY_ID("root"),
-        .backgroundColor = COLOR_RED,
+  CLAY(CLAY_ID("root"),
+       {.backgroundColor = COLOR_RED,
         .layout = {
             .padding = {1, 1, 1, 1},
             .sizing = {.width = {.type = CLAY__SIZING_TYPE_FIXED, .size = {.minMax = {.min = 20, .max = 20}}},
                        .height = {.type = CLAY__SIZING_TYPE_FIXED, .size = {.minMax = {.min = 20, .max = 20}}}}}}) {
-    CLAY({.id = CLAY_ID("first"),
-          .backgroundColor = COLOR_BLUE,
+    CLAY(CLAY_ID("first"),
+         {.backgroundColor = COLOR_BLUE,
           .layout = {.padding = {1, 1, 1, 1},
                      .sizing = {.width = {.type = CLAY__SIZING_TYPE_PERCENT, .size = {.percent = 0.5f}},
                                 .height = {.type = CLAY__SIZING_TYPE_PERCENT, .size = {.percent = 0.5f}}}}}) {}

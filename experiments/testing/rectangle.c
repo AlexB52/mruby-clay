@@ -16,8 +16,8 @@ int main() {
 
   Clay_BeginLayout();
 
-  CLAY({.id = CLAY_ID("root"),
-        .backgroundColor = COLOR_RED,
+  CLAY(CLAY_ID("root"),
+       {.backgroundColor = COLOR_RED,
         .layout = {
             .padding = 1,
             .sizing = {.width = {.type = CLAY__SIZING_TYPE_FIXED, .size = {.minMax = {.min = 20, .max = 20}}},
