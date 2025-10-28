@@ -194,6 +194,22 @@ Clay_TextElementConfig mrb_cast_clay_text_config(mrb_state* mrb, mrb_value hash)
   if (mrb_hash_p(backgroundColor)) {
     result.backgroundColor = mrb_cast_clay_color(mrb, backgroundColor);
   }
+
+  mrb_value fontSize = mrb_get_hash_value(mrb, hash, "font_size");
+  if (mrb_fixnum_p(fontSize)) {
+    result.fontSize = mrb_int(mrb, fontSize);
+  }
+
+  mrb_value letterSpacing = mrb_get_hash_value(mrb, hash, "letter_spacing");
+  if (mrb_fixnum_p(letterSpacing)) {
+    result.letterSpacing = mrb_int(mrb, letterSpacing);
+  }
+
+  mrb_value lineHeight = mrb_get_hash_value(mrb, hash, "line_height");
+  if (mrb_fixnum_p(lineHeight)) {
+    result.lineHeight = mrb_int(mrb, lineHeight);
+  }
+
   return result;
 }
 

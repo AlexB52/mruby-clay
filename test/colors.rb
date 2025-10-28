@@ -49,7 +49,9 @@ class TestColors < MTest::Unit::TestCase
 
   private
   def assert_default_colors(subject, params)
-    assert_equal Clay::Colors.build(**params), subject
+    other = Clay::Colors.build(**params)
+
+    assert_equal other, subject
     assert_equal(params, subject.to_h)
   end
 

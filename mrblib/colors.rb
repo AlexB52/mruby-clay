@@ -12,11 +12,14 @@ module Clay
       end
 
       def ==(other)
-        if other.is_a?(Hash)
-          return other == to_h(:sym_keys) || other == to_h(:string_keys)
+        case other
+        when Hash
+          other == to_h(:sym_keys) || other == to_h(:string_keys)
+        when Clay::Colors::Color
+          other.to_h == to_h
+        else
+          false
         end
-
-        super
       end
     end
 

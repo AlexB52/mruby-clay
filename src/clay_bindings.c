@@ -239,25 +239,26 @@ mrb_value mrb_clay_end_layout(mrb_state* mrb, mrb_value self) {
 static Clay_Dimensions measure_text_callback(Clay_StringSlice text, Clay_TextElementConfig* config, void* user_data) {
   mrb_state* mrb = (mrb_state*)user_data;
 
+  // Builds the text_config parameter
   mrb_value textConfig = mrb_hash_new_capa(mrb, 2);
   mrb_hash_set(mrb, textConfig, mrb_symbol_value(mrb_intern_lit(mrb, "font_size")), mrb_fixnum_value(config->fontSize));
+  mrb_hash_set(mrb, textConfig, mrb_symbol_value(mrb_intern_lit(mrb, "letter_spacing")),
+               mrb_fixnum_value(config->letterSpacing));
   mrb_hash_set(mrb, textConfig, mrb_symbol_value(mrb_intern_lit(mrb, "line_height")),
                mrb_fixnum_value(config->lineHeight));
 
-  // build Ruby args: [ text_str, config_hash ]
+  // Builds Ruby args: [ text_str, config_hash ] to pass to the Ruby block
   mrb_value args = mrb_ary_new_capa(mrb, 2);
   mrb_ary_set(mrb, args, 0, mrb_str_new(mrb, text.chars, text.length));
   mrb_ary_set(mrb, args, 1, textConfig);
 
-  // returns [width, height]
+  // Calculates with and height from block
   mrb_value block = mrb_gv_get(mrb, mrb_intern_lit(mrb, "$__clay_measure_proc"));
-  mrb_value ret = mrb_yield(mrb, block, args);
+  mrb_value result = mrb_yield(mrb, block, args);
 
-  // extract width & height
-  mrb_value width = mrb_ary_ref(mrb, ret, 0);
-  mrb_value height = mrb_ary_ref(mrb, ret, 1);
-
-  // return (Clay_Dimensions){.width = (float)text.length, .height = 1.0f};
+  // Extracts width & height
+  mrb_value width = mrb_ary_ref(mrb, result, 0);
+  mrb_value height = mrb_ary_ref(mrb, result, 1);
 
   return (Clay_Dimensions){.width = mrb_float(mrb_to_float(mrb, width)),
                            .height = mrb_float(mrb_to_float(mrb, height))};
