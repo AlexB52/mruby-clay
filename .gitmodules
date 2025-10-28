@@ -1,7 +1,7 @@
 [submodule "clay"]
 	path = clay
-	url = https://github.com/nicbarker/clay.git
-	branch = main
+	url = https://github.com/alexb52/clay.git
+	branch = patched
 [submodule "mruby"]
 	path = mruby
 	url = https://github.com/mruby/mruby.git
